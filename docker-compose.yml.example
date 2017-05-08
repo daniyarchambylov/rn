@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  # PostgreSQL
+  postgres:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+
+  backend:
+    restart: always
+    build: ./backend
+    command: python /usr/src/backend/manage.py runserver 0.0.0.0:8000
+    links:
+      - postgres:postgres
+    volumes:
+      - ./backend:/usr/src/backend
+      - ./static:/usr/src/backend/static
+      - ./media:/usr/src/backend/media
+    env_file: .env
+
+  nginx:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - /www/static
+      - /www/media
+    volumes_from:
+      - backend
+    links:
+      - backend:backend
+
+volumes:
+  pgdata:

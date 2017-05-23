@@ -92,3 +92,4 @@ ENV/
 
 # docker-compose
 docker-compose.yml
+media/

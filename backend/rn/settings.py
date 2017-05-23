@@ -38,8 +38,6 @@ DEBUG = config['debug.debug']
 
 ALLOWED_HOSTS = config['security.allowed_hosts'].split()
 
-print(ALLOWED_HOSTS)
-
 
 # Application definition
 

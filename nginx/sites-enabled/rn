@@ -22,7 +22,7 @@ server {
             set $height $arg_h;
         }
 
-        alias /usr/src/app/media;
+        alias /usr/src/backend/media;
         image_filter crop $width $height;
         image_filter_buffer 10M;
     }

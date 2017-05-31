@@ -31,16 +31,20 @@ class UserManager(models.Manager):
 
         return self._create_user(phone, password, **kwargs)
 
+    def get_by_natural_key(self, username):
+        return self.get(**{self.model.USERNAME_FIELD: username})
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=12, unique=True)
     name = models.CharField(max_length=255, blank=True)
-    date_joined = models.DateTimeField(auto_created=True)
+    date_joined = models.DateTimeField(auto_created=True, auto_now_add=True)
     is_staff = models.BooleanField(default=False)
+    email = models.EmailField(blank=True, db_index=True)
 
     USERNAME_FIELD = 'phone'
 
-    objects = UserManager
+    objects = UserManager()
 
     def get_short_name(self):
         return self.name

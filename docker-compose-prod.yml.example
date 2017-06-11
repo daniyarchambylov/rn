@@ -14,25 +14,38 @@ services:
     restart: always
     build: ./backend
     command: python /usr/src/backend/manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
     links:
       - postgres:postgres
     volumes:
       - ./backend:/usr/src/backend
-      - ./build/static:/usr/src/backend/static
-      - ./build/media:/usr/src/backend/media
+      - ./static:/usr/src/backend/static
+      - ./media:/usr/src/backend/media
     env_file: .env
 
   admin:
     restart: always
     build: ./admin
     command: npm start
-    ports:
-      - "3000:3000"
+    links:
+      - postgres:postgres
     volumes:
-      - ./admin/src:/usr/src/app/src
-      - ./admin/public:/usr/src/app/public
+      - ./backend:/usr/src/backend
+      - ./static:/usr/src/backend/static
+      - ./media:/usr/src/backend/media
+    env_file: .env
+
+  nginx:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - /www/static
+      - /www/media
+    volumes_from:
+      - backend
+    links:
+      - backend:backend
 
 volumes:
   pgdata:

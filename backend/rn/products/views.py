@@ -1,3 +1,13 @@
-from django.shortcuts import render
+# -*- coding: utf-8 -*-
+from rest_framework import viewsets, permissions
 
-# Create your views here.
+from .models import Product
+from .serializers import ProductsSerializer
+
+
+class ProductsViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductsSerializer
+    queryset = Product.objects.all()
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+    ]

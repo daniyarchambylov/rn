@@ -1,0 +1,183 @@
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@function parseInt($n) { /* 2 */
+  @return $n / ($n * 0 + 1);
+}
+
+@mixin rem($property, $values) {
+  $px : (); /* 3 */
+  $rem: (); /* 3 */
+
+  @each $value in $values { /* 4 */
+
+    @if $value == 0 or $value == auto { /* 5 */
+      $px : append($px , $value);
+      $rem: append($rem, $value);
+    }
+
+    @else {
+      $unit: unit($value);    /* 6 */
+      $val: parseInt($value); /* 6 */
+
+      @if $unit == "px" {  /* 7 */
+        $px : append($px,  $value);
+        $rem: append($rem, ($val / 10 + rem));
+      }
+
+      @if $unit == "rem" { /* 7 */
+        $px : append($px,  ($val * 10 + px));
+        $rem: append($rem, $value);
+      }
+    }
+  }
+
+  @if $px == $rem {     /* 8 */
+    #{$property}: $px;  /* 9 */
+  } @else {
+    #{$property}: $px;  /* 9 */
+    #{$property}: $rem; /* 9 */
+  }
+}
+
+
+@mixin highlight-change($style, $property, $keyframe) {
+  $style: $property;
+  -webkit-animation-name: $keyframe;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-play-state: running;
+  -moz-animation-name: $keyframe;
+  -moz-animation-duration: 2s;
+  -moz-animation-timing-function: linear;
+  -moz-animation-delay: 0s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-direction: alternate;
+  -moz-animation-play-state: running;
+  -o-animation-name: $keyframe;
+  -o-animation-duration: 2s;
+  -o-animation-timing-function: linear;
+  -o-animation-delay: 0s;
+  -o-animation-iteration-count: 1;
+  -o-animation-direction: alternate;
+  -o-animation-play-state: running;
+  animation-name: $keyframe;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-play-state: running;
+}
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@include keyframes(bgAnimationDown) {
+  0% {
+    background: #feb7b7;
+  }
+  10% {
+    background: #feb7b7;
+  }
+  11% {
+    background: #f9faf5;
+  }
+  20% {
+    background: #f9faf5;
+  }
+  21% {
+    background: #feb7b7;
+  }
+  30% {
+    background: #feb7b7;
+  }
+  31% {
+    background: #f9faf5;
+  }
+  40% {
+    background: #f9faf5;
+  }
+  41% {
+    background: #feb7b7;
+  }
+  100% {
+    background: #f9faf5;
+  }
+}
+
+@include keyframes(bgAnimationUp) {
+  0% {
+    background: #b7feb7;
+  }
+  10% {
+    background: #b7feb7;
+  }
+  11% {
+    background: #f9faf5;
+  }
+  20% {
+    background: #f9faf5;
+  }
+  21% {
+    background: #b7feb7;
+  }
+  30% {
+    background: #b7feb7;
+  }
+  31% {
+    background: #f9faf5;
+  }
+  40% {
+    background: #f9faf5;
+  }
+  41% {
+    background: #b7feb7;
+  }
+  100% {
+    background: #f9faf5;
+  }
+}

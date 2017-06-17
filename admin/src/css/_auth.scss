@@ -1,0 +1,63 @@
+.ui.form {
+  font-size: 11px;
+}
+
+.auth {
+  background: #222d32;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &__form {
+    background: #fff;
+    padding: 38px;
+    width: 320px;
+    font-size: 10px;
+  }
+
+  .forget-password {
+    color: #f68236;
+    float: right;
+
+  }
+
+  .ui.orange.button,
+  .ui.orange.buttons .button {
+    background: #f68236;
+    font-weight: 100;
+    margin: 0 auto;
+    text-transform: uppercase;
+    font-size: 11px;
+    width: 125px;
+    display: inline-block;
+    height: 34px;
+
+  }
+
+  .ui.form .field {
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .ui.form .field>label {
+    font-weight: 100;
+    text-transform: uppercase;
+    color: #606060;
+  }
+
+  .registration-btn {
+    margin-top: 5px;
+    display: block;
+    color: #f68236;
+    font-style: italic;
+  }
+}
+
+.text-center {
+  text-align: center !important;
+}

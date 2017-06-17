@@ -3,6 +3,7 @@ import { routerReducer, routerMiddleware } from 'react-router-redux'
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import DevTools from './containers/DevTools';
 import authReducer from './reducer/authReducer';
+import applicationReducer from './reducer/applicationReducer';
 import { persistState } from 'redux-devtools';
 
 import history from './history'
@@ -22,6 +23,7 @@ enhancers.push(DevTools.instrument(),
 const store = createStore(
   combineReducers({
     auth: authReducer,
+    application: applicationReducer,
     router: routerReducer
   }),
   {},

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form } from 'semantic-ui-react';
+import { Form, Input, Button } from 'semantic-ui-react';
 import {getSignIn as getSignInAction} from '../../actions/auth/creators/signIn';
 
 class SignIn extends React.Component {
@@ -24,11 +24,20 @@ class SignIn extends React.Component {
 
   render() {
     return (
-      <Form>
-        <Form.Input label='Enter phone' type='phone' />
-        <Form.Input label='Enter password' type='phone' />
-        <Form.Button content='Confirm' onClick={this.submitAuth} />
-      </Form>
+      <div className='auth'>
+        <Form className='auth__form'>
+          <Form.Input label='Введите телефон' type='phone' />
+          <Form.Field>
+            <label>Введите пароль <a href="#" className='forget-password'>Забыли пароль?</a></label>
+            <Input type='password' />
+          </Form.Field>
+          <Form.Field className='text-center'>
+            <Button content='Вход' color='orange' onClick={this.submitAuth} />
+            <a href="#" className='registration-btn'>Зарегистрироваться</a>
+          </Form.Field>
+        </Form>
+      </div>
+
     )
   }
 }

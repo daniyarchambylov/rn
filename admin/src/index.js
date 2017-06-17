@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import 'semantic-ui-css/semantic.min.css';
-import './index.css';
+import './css/index.css';
 import SignIn from './components/auth/Signin';
 
 import { Provider } from 'react-redux'
@@ -14,16 +14,16 @@ import { ConnectedRouter } from 'react-router-redux'
 import store from './store';
 import history from './history';
 import DevTools from './containers/DevTools';
+import Header from './components/Header';
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
+    <div className='root-inner'>
       <ConnectedRouter history={history}>
-        <div>
-          <h1>Header</h1>
+        <div className='router-wrapper'>
+          <Header />
           <Route exact path="/" component={App}/>
           <Route path="/sign-in" component={SignIn}/>
-          <h2>Footer</h2>
         </div>
       </ConnectedRouter>
       <DevTools />

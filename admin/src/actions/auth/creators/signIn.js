@@ -5,7 +5,6 @@ export function getSignIn(data) {
   return dispatch =>
     API.create(`/sign-in/`, data)
       .then((data) => {
-        console.log(data);
         dispatch({
           type: signInActions.FETCH_SIGN_IN,
         });

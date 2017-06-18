@@ -4,3 +4,4 @@ psycopg2
 djangorestframework
 djangorestframework-jwt
 django-cors-headers
+gunicorn

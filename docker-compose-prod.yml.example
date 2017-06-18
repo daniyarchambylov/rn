@@ -17,9 +17,8 @@ services:
     links:
       - postgres:postgres
     volumes:
-      - ./backend:/usr/src/backend
-      - ./static:/usr/src/backend/static
-      - ./media:/usr/src/backend/media
+      - /usr/src/backend/static
+      - /usr/src/backend/media
     env_file: .env
 
   admin:

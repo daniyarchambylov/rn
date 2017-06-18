@@ -5,6 +5,8 @@
   background: $header-bg;
   text-align: right;
   height: $header-height;
+  position: relative;
+  z-index: 1;
 
   @media all and (max-width: 767px) {
     height: auto;
@@ -64,10 +66,6 @@
   height: 40px;
   text-align: center;
 
-  &--opened {
-    background-color:  rgba(28, 23, 20, 0.8);
-  }
-
   &__btn {
     display: inline-block;
     width: 100%;
@@ -77,6 +75,7 @@
   }
 
   .dropdown {
+    display: none;
     top: 40px;
     right: 0;
     text-align: left;
@@ -94,6 +93,14 @@
       &:hover {
         color: #fff;
       }
+    }
+  }
+
+  &--opened {
+    background-color:  rgba(28, 23, 20, 0.8);
+
+    .dropdown {
+      display: block;
     }
   }
 }

@@ -5,12 +5,16 @@
 
 .sidebar {
   width: 226px;
-  background-color: #222d32; }
+  background-color: #222d32;
+  min-width: 226px;
+  max-width: 226px;
+  position: relative;
+  z-index: 11; }
   @media all and (max-width: 767px) {
     .sidebar {
       position: absolute;
       left: -226px;
-      top: 0;
+      top: 80px;
       height: 100%;
       transition: left 0.3s ease-in-out; }
       .sidebar--toggled {
@@ -62,7 +66,9 @@
 .header {
   background: #3c8cbb;
   text-align: right;
-  height: 40px; }
+  height: 40px;
+  position: relative;
+  z-index: 1; }
   @media all and (max-width: 767px) {
     .header {
       height: auto; } }
@@ -110,8 +116,6 @@
   width: 65px;
   height: 40px;
   text-align: center; }
-  .settings--opened {
-    background-color: rgba(28, 23, 20, 0.8); }
   .settings__btn {
     display: inline-block;
     width: 100%;
@@ -119,6 +123,7 @@
     background: url("../icons/icon-settings.svg") no-repeat 50%;
     background-size: 18px; }
   .settings .dropdown {
+    display: none;
     top: 40px;
     right: 0;
     text-align: left;
@@ -133,6 +138,10 @@
       margin: 15px; }
       .settings .dropdown__item:hover {
         color: #fff; }
+  .settings--opened {
+    background-color: rgba(28, 23, 20, 0.8); }
+    .settings--opened .dropdown {
+      display: block; }
 
 .sidebar-header {
   float: left;
@@ -222,6 +231,62 @@
 .text-center {
   text-align: center !important; }
 
+.main .common-form {
+  margin: 40px 0; }
+  .main .common-form .field > label {
+    font-weight: 100;
+    text-transform: uppercase;
+    color: #606060; }
+  .main .common-form .field {
+    margin-bottom: 1rem; }
+
+.main .field-double {
+  display: flex;
+  width: 100%;
+  flex-direction: row; }
+  @media all and (max-width: 767px) {
+    .main .field-double {
+      flex-wrap: wrap; } }
+  .main .field-double .field {
+    flex-grow: 1; }
+    @media all and (max-width: 767px) {
+      .main .field-double .field {
+        width: 100%; } }
+    @media all and (min-width: 767px) {
+      .main .field-double .field {
+        margin-bottom: 0; }
+        .main .field-double .field:first-child {
+          margin-right: 1em; }
+        .main .field-double .field:last-child {
+          margin-left: 1em; } }
+
+.main .image-uploads {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  flex-wrap: wrap; }
+  .main .image-uploads__uploader {
+    border: none;
+    background: none;
+    margin-bottom: 1em; }
+
+.main .ui.orange.button,
+.main .ui.orange.buttons .button {
+  background: #f68236;
+  font-weight: 100;
+  margin: 0 auto;
+  text-transform: uppercase;
+  font-size: 11px;
+  width: 125px;
+  display: inline-block;
+  height: 34px; }
+
+.static-page .grid {
+  margin-top: 42px; }
+
+.static-page .image {
+  margin: 0 auto; }
+
 #root {
   height: 100%; }
 
@@ -260,4 +325,32 @@ body {
   flex-grow: 1;
   padding: 0 12px; }
 
-/*# sourceMappingURL=index.css.map */
+.content {
+  display: flex;
+  width: 100%;
+  height: 100%; }
+
+.auth + .content {
+  display: none; }
+
+.title {
+  margin: 0;
+  padding: 0;
+  font-weight: 400; }
+  .title--primary {
+    line-height: 23px;
+    font-size: 24px; }
+  .title--secondary {
+    font-size: 18px; }
+  .title--column {
+    font-size: 24px;
+    margin-bottom: 2rem;
+    font-weight: 700; }
+
+.main {
+  margin-top: 42px;
+  padding: 0 12px;
+  flex-grow: 1; }
+
+.sidebar {
+  flex-grow: 1px; }

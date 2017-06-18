@@ -1,0 +1,72 @@
+.main {
+  .common-form {
+    margin: 40px 0;
+
+    .field > label {
+      font-weight: 100;
+      text-transform: uppercase;
+      color: #606060;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+  }
+
+
+
+  .field-double {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+
+    @media all and (max-width: 767px) {
+      flex-wrap: wrap;
+    }
+
+    .field {
+      flex-grow: 1;
+
+      @media all and (max-width: 767px) {
+        width: 100%;
+      }
+
+      @media all and (min-width: 767px) {
+        margin-bottom: 0;
+
+        &:first-child {
+          margin-right: 1em;
+        }
+
+        &:last-child {
+          margin-left: 1em;
+        }
+      }
+    }
+  }
+
+  .image-uploads {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    &__uploader {
+      border: none;
+      background: none;
+      margin-bottom: 1em;
+    }
+  }
+
+  .ui.orange.button,
+  .ui.orange.buttons .button {
+    background: #f68236;
+    font-weight: 100;
+    margin: 0 auto;
+    text-transform: uppercase;
+    font-size: 11px;
+    width: 125px;
+    display: inline-block;
+    height: 34px;
+  }
+}

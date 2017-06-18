@@ -11,7 +11,6 @@ export default function authReducer(state, action) {
 
     switch (action.type) {
         case sidebarActions.SIDEBAR_TOGGLE:
-            console.log(action.data);
             return {
                 ...state,
                 isSidebarToggled: action.data,

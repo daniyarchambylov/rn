@@ -15,6 +15,10 @@ import store from './store';
 import history from './history';
 import DevTools from './containers/DevTools';
 import Header from './components/Header';
+import Products from './components/products/Product';
+import Sidebar from './components/Sidebar';
+import AboutUs from './components/static-pages/About';
+import Agreement from './components/static-pages/Agreement';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -22,8 +26,14 @@ ReactDOM.render(
       <ConnectedRouter history={history}>
         <div className='router-wrapper'>
           <Header />
-          <Route exact path="/" component={App}/>
           <Route path="/sign-in" component={SignIn}/>
+          <div className='content'>
+            <Sidebar />
+            <Route exact path="/" component={App}/>
+            <Route path="/products" component={Products}/>
+            <Route path="/about-us" component={AboutUs}/>
+            <Route path="/user-agreement" component={Agreement}/>
+          </div>
         </div>
       </ConnectedRouter>
       <DevTools />

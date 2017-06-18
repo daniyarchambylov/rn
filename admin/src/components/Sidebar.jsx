@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Sidebar extends React.Component {
     static PropTypes = {
@@ -10,7 +11,7 @@ class Sidebar extends React.Component {
     render() {
         const {isSidebarToggled} = this.props;
 
-        const sidebarCls = isSidebarToggled ? ' sidebar--toggled' : ''
+        const sidebarCls = isSidebarToggled ? ' sidebar--toggled' : '';
         return (
             <aside className={`sidebar${sidebarCls}`}>
                 <ul className='sidebar-nav'>
@@ -28,9 +29,9 @@ class Sidebar extends React.Component {
                         </a>
                     </li>
                     <li className='sidebar-nav__item'>
-                        <a href='#' className='sidebar-nav__link'>
+                        <Link to='/products' className='sidebar-nav__link'>
                             Создание товара
-                        </a>
+                        </Link>
                     </li>
                     <li className='sidebar-nav__item'>
                         <a href='#' className='sidebar-nav__link'>
@@ -47,6 +48,16 @@ class Sidebar extends React.Component {
                                 <a href='#' className='sidebar-dropdown__link'>Список товаров</a>
                             </li>
                         </ul>
+                    </li>
+                    <li className='sidebar-nav__item'>
+                        <Link to='/about-us' className='sidebar-nav__link'>
+                            О нас
+                        </Link>
+                    </li>
+                    <li className='sidebar-nav__item'>
+                        <Link to='/user-agreement' className='sidebar-nav__link'>
+                            Пользовательское соглашение
+                        </Link>
                     </li>
                 </ul>
             </aside>

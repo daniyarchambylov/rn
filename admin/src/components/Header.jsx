@@ -17,17 +17,31 @@ class Header extends React.Component {
         super(props);
 
         this.sidebarToggle = this.sidebarToggle.bind(this);
+        this.dropdownToggle = this.dropdownToggle.bind(this);
+
+        this.state = {
+            dropdownToggled: false
+        }
     }
 
     sidebarToggle() {
         const {isSidebarToggled} = this.props;
-        const data = !isSidebarToggled;
-        this.props.sidebarToggleAction(data);
+        this.props.sidebarToggleAction(!isSidebarToggled);
+    }
+
+    dropdownToggle() {
+        this.setState({
+          dropdownToggled: !this.state.dropdownToggled
+        })
     }
 
     render() {
         const {auth} = this.props;
+        const {dropdownToggled} = this.state;
         const token = auth.token;
+
+        const settingsCls = dropdownToggled ? ' settings--opened' : '';
+
         return (
             <header className='header'>
                 <div className='sidebar-header'>
@@ -47,8 +61,8 @@ class Header extends React.Component {
                         <img className='user__img' src={imgUser} alt='' />
                         Екатерина Добрынина
                     </div>
-                    <div className='header__item header__item settings settings--opened dropdown--parent'>
-                        <button className='btn btn--transparent settings__btn' />
+                    <div className={`header__item header__item settings dropdown--parent${settingsCls}`}>
+                        <button className='btn btn--transparent settings__btn' onClick={this.dropdownToggle}/>
                         <nav className='dropdown'>
                             <a href='#' className='dropdown__item'>
                                 Редактировать профиль

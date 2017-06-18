@@ -2,7 +2,6 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework import mixins
 from rest_framework.response import Response
-from rest_framework.viewsets import generics
 
 from .models import Product, Order
 from .serializers import ProductsSerializer, OrdersSerializer, OrderProductsSerializer
@@ -19,7 +18,7 @@ class ProductsViewSet(viewsets.ModelViewSet):
 class OrdersViewSet(mixins.CreateModelMixin,
                     mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
-                    generics.GenericAPIView):
+                    viewsets.GenericViewSet):
     queryset = Order.objects.all()
     serializer_class = OrdersSerializer
     permission_classes = [

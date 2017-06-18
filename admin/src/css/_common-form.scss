@@ -1,6 +1,7 @@
 .main {
   .common-form {
     margin: 40px 0;
+    max-width: 474px;
 
     .field > label {
       font-weight: 100;
@@ -9,11 +10,9 @@
     }
 
     .field {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
   }
-
-
 
   .field-double {
     display: flex;
@@ -68,5 +67,19 @@
     width: 125px;
     display: inline-block;
     height: 34px;
+  }
+
+  .ui.toggle.checkbox input:checked~.box,
+  .ui.toggle.checkbox input:checked~label,
+  .ui.toggle.checkbox .box,
+  .ui.toggle.checkbox label {
+    font-weight: 100;
+    text-transform: uppercase;
+    color: #606060 !important;
+    font-size: 10px !important;
+  }
+
+  .ui.toggle.checkbox input:checked~.box:before, .ui.toggle.checkbox input:checked~label:before {
+    background-color: #f68236 !important;
   }
 }

@@ -24,9 +24,14 @@ class Sidebar extends React.Component {
                         </a>
                     </li>
                     <li className='sidebar-nav__item'>
-                        <a href='#' className='sidebar-nav__link'>
+                        <Link to='/user-profile' className='sidebar-nav__link'>
                             Профиль компании
-                        </a>
+                        </Link>
+                    </li>
+                    <li className='sidebar-nav__item'>
+                        <Link to='/orders' className='sidebar-nav__link'>
+                            Мои заказы
+                        </Link>
                     </li>
                     <li className='sidebar-nav__item'>
                         <Link to='/products' className='sidebar-nav__link'>
@@ -39,7 +44,9 @@ class Sidebar extends React.Component {
                         </a>
                         <ul className='sidebar-dropdown'>
                             <li className='sidebar-dropdown__item'>
-                                <a href='#' className='sidebar-dropdown__link'>Список торговых точек</a>
+                                <Link to='/companies' className='sidebar-dropdown__link'>
+                                    Список торговых точек
+                                </Link>
                             </li>
                             <li className='sidebar-dropdown__item'>
                                 <a href='#' className='sidebar-dropdown__link'>Список складов</a>
@@ -57,6 +64,11 @@ class Sidebar extends React.Component {
                     <li className='sidebar-nav__item'>
                         <Link to='/user-agreement' className='sidebar-nav__link'>
                             Пользовательское соглашение
+                        </Link>
+                    </li>
+                    <li className='sidebar-nav__item'>
+                        <Link to='/contact-us' className='sidebar-nav__link'>
+                            Связаться с нами
                         </Link>
                     </li>
                 </ul>

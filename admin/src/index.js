@@ -19,6 +19,10 @@ import Products from './components/products/Product';
 import Sidebar from './components/Sidebar';
 import AboutUs from './components/static-pages/About';
 import Agreement from './components/static-pages/Agreement';
+import UserProfile from './components/profile/UserProfile';
+import CompaniesList from './components/companies/CompaniesList';
+import ContactUs from './components/static-pages/ContactUs';
+import OrdersList from './components/orders/OrdersList';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -33,6 +37,10 @@ ReactDOM.render(
             <Route path="/products" component={Products}/>
             <Route path="/about-us" component={AboutUs}/>
             <Route path="/user-agreement" component={Agreement}/>
+            <Route path="/user-profile" component={UserProfile} />
+            <Route path="/companies" component={CompaniesList} />
+            <Route path="/contact-us" component={ContactUs} />
+            <Route path="/orders" component={OrdersList} />
           </div>
         </div>
       </ConnectedRouter>

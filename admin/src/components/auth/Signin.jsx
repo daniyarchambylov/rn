@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
+
 import { Form, Input, Button } from 'semantic-ui-react';
 import {getSignIn as getSignInAction} from '../../actions/auth/creators/signIn';
 
@@ -19,7 +21,12 @@ class SignIn extends React.Component {
     e.preventDefault();
     const phone = '996555992938';
     const password = 'qwerty';
-    this.props.getSignInAction({phone, password});
+
+
+    this.props.dispatch(this.props.getSignInAction({phone, password}))
+      .then(() => {
+        this.props.dispatch(push(this.props.redirectTo));
+      });
   }
 
   render() {
@@ -42,10 +49,12 @@ class SignIn extends React.Component {
   }
 }
 
-function mapToProps(state) {
+function mapStateToProps(state) {
   return {
-    ...state
-  }
+    isSignedIn: state.auth.signedIn,
+    redirectTo: state.auth.redirectTo || '/',
+    getSignInAction,
+  };
 }
 
-export default connect(mapToProps, {getSignInAction})(SignIn);
+export default connect(mapStateToProps)(SignIn);

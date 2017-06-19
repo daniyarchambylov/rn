@@ -13,26 +13,33 @@ import { Route } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import store from './store';
 import history from './history';
-import DevTools from './containers/DevTools';
-import Header from './components/Header';
 import Products from './components/products/Product';
-import Sidebar from './components/Sidebar';
 import AboutUs from './components/static-pages/About';
 import Agreement from './components/static-pages/Agreement';
 import UserProfile from './components/profile/UserProfile';
 import CompaniesList from './components/companies/CompaniesList';
 import ContactUs from './components/static-pages/ContactUs';
 import OrdersList from './components/orders/OrdersList';
+import LazilyLoad, { importLazy } from './components/LazyLoad';
 
 ReactDOM.render(
   <Provider store={store}>
     <div className='root-inner'>
       <ConnectedRouter history={history}>
         <div className='router-wrapper'>
-          <Header />
+          <LazilyLoad modules={{ Header: () => importLazy(import('./components/Header')), }}>
+            {({Header}) => (
+              <Header />
+            )}
+          </LazilyLoad>
           <Route path="/sign-in" component={SignIn}/>
           <div className='content'>
-            <Sidebar />
+            <LazilyLoad modules={{ Sidebar: () => importLazy(import('./components/Sidebar')), }}>
+              {({Sidebar}) => (
+                <Sidebar />
+              )}
+            </LazilyLoad>
+
             <Route exact path="/" component={App}/>
             <Route path="/products" component={Products}/>
             <Route path="/about-us" component={AboutUs}/>
@@ -44,7 +51,11 @@ ReactDOM.render(
           </div>
         </div>
       </ConnectedRouter>
-      <DevTools />
+      <LazilyLoad modules={{ DevTools: () => importLazy(import('./containers/DevTools')), }}>
+        {({DevTools}) => (
+          <DevTools />
+        )}
+      </LazilyLoad>
     </div>
   </Provider>,
   document.getElementById('root')

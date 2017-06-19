@@ -12,13 +12,16 @@ const middleware = routerMiddleware(history);
 const enhancers = [];
 
 enhancers.push(applyMiddleware(thunkMiddleware, middleware));
-enhancers.push(DevTools.instrument(),
-  persistState(
-    window.location.href.match(
-      /[?&]debug_session=([^&#]+)\b/
+
+if (process.env.NODE_ENV !== 'production') {
+  enhancers.push(DevTools.instrument(),
+    persistState(
+      window.location.href.match(
+        /[?&]debug_session=([^&#]+)\b/
+      )
     )
-  )
-);
+  );
+}
 
 const store = createStore(
   combineReducers({

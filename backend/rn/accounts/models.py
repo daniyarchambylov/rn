@@ -1,8 +1,14 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.utils.translation import ugettext_lazy as _
 
-# -*- coding: utf-8 -*-
+USER_ROLE_CHOICES = (
+    ('user', _('Пользователь')),
+    ('storehouse', _('Склад')),
+    ('store', _('Торговая точка')),
+)
 
 
 class UserManager(models.Manager):
@@ -41,6 +47,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_created=True, auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(blank=True, db_index=True)
+    role = models.CharField(max_length=50, choices=USER_ROLE_CHOICES, default=USER_ROLE_CHOICES[0][0])
+    is_approved = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'phone'
 
@@ -51,3 +59,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            if self.role == USER_ROLE_CHOICES[0][0]:
+                self.is_approved = True
+        return super(User, self).save(*args, **kwargs)

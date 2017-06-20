@@ -8,6 +8,7 @@ SHIPMENT_CHOICES = (
     ('pick-up', 'Забрать с магазина'),
 )
 
+
 class Product(models.Model):
     title = models.CharField(verbose_name='Наименование товара', max_length=255)
     code = models.CharField(verbose_name='Артикул', max_length=255, blank=True, db_index=True)

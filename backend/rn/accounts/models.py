@@ -48,7 +48,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(blank=True, db_index=True)
     role = models.CharField(max_length=50, choices=USER_ROLE_CHOICES, default=USER_ROLE_CHOICES[0][0])
-    is_approved = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'phone'
 
@@ -65,3 +64,32 @@ class User(AbstractBaseUser, PermissionsMixin):
             if self.role == USER_ROLE_CHOICES[0][0]:
                 self.is_approved = True
         return super(User, self).save(*args, **kwargs)
+
+
+USER_REQUEST_STATUS_CHOICES = (
+    ('pending', _('В обработке')),
+    ('approved', _('Подтвержден')),
+    ('denied', _('Отклонен')),
+)
+
+
+class UserRoleRequest(models.Model):
+    user = models.ForeignKey(User)
+    role = models.CharField(max_length=50, choices=USER_ROLE_CHOICES)
+    status = models.CharField(max_length=25, choices=USER_REQUEST_STATUS_CHOICES, default=USER_REQUEST_STATUS_CHOICES[0][0])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def _save_user(self):
+        user = self.user
+        user.role = self.role
+        user.save()
+
+    def approve(self):
+        self.status = USER_REQUEST_STATUS_CHOICES[1][0]
+        self.save()
+        self._save_user()
+
+    def deny(self):
+        self.status = USER_REQUEST_STATUS_CHOICES[2][0]
+        self.save()
+        self._save_user()

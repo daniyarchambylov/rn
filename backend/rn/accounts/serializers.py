@@ -2,6 +2,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from .models import UserRoleRequest
 
 User = get_user_model()
 
@@ -23,3 +24,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
         res.pop('password')
         return res
 
+
+class UserRoleRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRoleRequest
+        fields = '__all__'

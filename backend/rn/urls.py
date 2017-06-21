@@ -9,6 +9,7 @@ from .products import views as product_views
 router = DefaultRouter()
 router.register(r'products', product_views.ProductsViewSet)
 router.register(r'orders', product_views.OrdersViewSet)
+router.register(r'user-roles', account_views.UserRoleRequestsViewSet)
 
 urlpatterns = router.urls
 

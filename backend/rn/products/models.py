@@ -8,9 +8,16 @@ SHIPMENT_CHOICES = (
     ('pick-up', 'Забрать с магазина'),
 )
 
+CATEGORIES_CHOICES = (
+    (0, '-'),
+    (1, 'Мыломойка'),
+    (2, 'Хоз товары'),
+)
+
 
 class Product(models.Model):
     title = models.CharField(verbose_name='Наименование товара', max_length=255)
+    category = models.IntegerField(verbose_name='Категория', choices=CATEGORIES_CHOICES, default=0)
     code = models.CharField(verbose_name='Артикул', max_length=255, blank=True, db_index=True)
     quantity = models.PositiveIntegerField(verbose_name='Количество')
     created_on = models.DateField(verbose_name='Дата производства')

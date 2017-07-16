@@ -8,15 +8,17 @@ class SignedInContainer extends React.Component {
   componentDidMount() {
     const { dispatch, currentURL, isSignedIn } = this.props;
 
+    /*
     if (!isSignedIn) {
       dispatch(redirectOnSignIn(currentURL));
       dispatch(push('/sign-in'));
     }
+    */
   }
 
   render() {
     const { isSignedIn } = this.props;
-    if (isSignedIn) {
+    //if (isSignedIn) {
       return <div style={{ display: 'flex' }}>
         <LazilyLoad modules={{ Sidebar: () => importLazy(import('../components/Sidebar')), }}>
           {({ Sidebar }) => (
@@ -25,9 +27,9 @@ class SignedInContainer extends React.Component {
         </LazilyLoad>
         { this.props.children }
         </div>;
-    } else {
-      return null;
-    }
+    //} else {
+    //  return null;
+    //}
   }
 }
 

@@ -56,6 +56,9 @@ export default {
 
   create: function create(endpoint, data = {}, opts = {}) {
     const options = buildOptions(opts);
+    opts.headers = {
+      Authorization: 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6IiIsInVzZXJuYW1lIjoiOTk2NTU1MDAwMDAwIiwiZXhwIjoxNTAwMTQwMTM5LCJwaG9uZSI6Ijk5NjU1NTAwMDAwMCJ9.fdTfzSVnIoPuW-4QR_S6B6yPOD9U2nSodamALtexROc',
+    };
     return apiRequest.post(endpoint, data, options);
   },
 

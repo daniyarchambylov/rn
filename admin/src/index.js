@@ -13,7 +13,9 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'react-router-redux';
 import store from './store';
 import history from './history';
-import Products from './components/products/Product';
+import ProductCreate from './components/products/ProductCreate';
+import ProductEdit from './components/products/ProductEdit';
+import Products from './components/products/List';
 import AboutUs from './components/static-pages/About';
 import Agreement from './components/static-pages/Agreement';
 import UserProfile from './components/profile/UserProfile';
@@ -42,7 +44,9 @@ ReactDOM.render(
             <SignedInContainer>
               <Switch>
                 <Route path="/" exact component={App} />
-                <Route path="/products" component={Products}/>
+                <Route path="/products" exact component={Products}/>
+                <Route path="/products/:productId" exact component={ProductEdit}/>
+                <Route path="/products-create/" exact component={ProductCreate}/>
                 <Route path="/user-profile" component={UserProfile}/>
                 <Route path="/companies" component={CompaniesList}/>
                 <Route path="/contact-us" component={ContactUs}/>

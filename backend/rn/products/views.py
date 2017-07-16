@@ -14,6 +14,19 @@ class ProductsViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly,
     ]
 
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        ctx = {'request': request}
+        data['user'] = request.user.id
+
+        serializer = self.get_serializer(data=data, context=ctx)
+        serializer.is_valid(raise_exception=True)
+
+        order = serializer.save()
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class OrdersViewSet(mixins.CreateModelMixin,
                     mixins.ListModelMixin,

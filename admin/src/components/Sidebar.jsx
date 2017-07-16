@@ -34,7 +34,7 @@ class Sidebar extends React.Component {
                         </Link>
                     </li>
                     <li className='sidebar-nav__item'>
-                        <Link to='/products' className='sidebar-nav__link'>
+                        <Link to='/products-create' className='sidebar-nav__link'>
                             Создание товара
                         </Link>
                     </li>
@@ -52,7 +52,7 @@ class Sidebar extends React.Component {
                                 <a href='#' className='sidebar-dropdown__link'>Список складов</a>
                             </li>
                             <li className='sidebar-dropdown__item'>
-                                <a href='#' className='sidebar-dropdown__link'>Список товаров</a>
+                                <a href='/products' className='sidebar-dropdown__link'>Список товаров</a>
                             </li>
                         </ul>
                     </li>

@@ -15,12 +15,19 @@ class SignIn extends React.Component {
     super(props);
 
     this.submitAuth = this.submitAuth.bind(this);
+    this.onChangeInput = this.onChangeInput.bind(this);
+
+    this.state = {
+      phone: null,
+      password: null
+    }
   }
 
   submitAuth(e) {
     e.preventDefault();
-    const phone = '996555992938';
-    const password = 'qwerty';
+    const {phone, password} = this.state;
+
+    console.log(phone, password);
 
 
     this.props.dispatch(this.props.getSignInAction({phone, password}))
@@ -29,14 +36,20 @@ class SignIn extends React.Component {
       });
   }
 
+  onChangeInput(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
   render() {
     return (
       <div className='auth'>
         <Form className='auth__form'>
-          <Form.Input label='Введите телефон' type='phone' />
+          <Form.Input label='Введите телефон' type='phone' name='phone' onChange={this.onChangeInput} />
           <Form.Field>
             <label>Введите пароль <a href="#" className='forget-password'>Забыли пароль?</a></label>
-            <Input type='password' />
+            <Input type='password' name='password' onChange={this.onChangeInput} />
           </Form.Field>
           <Form.Field className='text-center'>
             <Button content='Вход' color='orange' onClick={this.submitAuth} />

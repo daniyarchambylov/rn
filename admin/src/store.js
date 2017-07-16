@@ -4,6 +4,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import DevTools from './containers/DevTools';
 import authReducer from './reducer/authReducer';
 import applicationReducer from './reducer/applicationReducer';
+import productsReducer from './reducer/productsReducer';
 import { persistState } from 'redux-devtools';
 
 import history from './history'
@@ -27,6 +28,7 @@ const store = createStore(
   combineReducers({
     auth: authReducer,
     application: applicationReducer,
+    products: productsReducer,
     router: routerReducer
   }),
   {},

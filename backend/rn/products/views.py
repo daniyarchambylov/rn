@@ -45,9 +45,12 @@ class OrdersViewSet(mixins.CreateModelMixin,
     def create(self, request, *args, **kwargs):
         data = request.data
         ctx = {'request': request}
+        data['user'] = request.user.id
+
+        products = data.pop('products', [])
 
         order_serializer = OrdersSerializer(data=data, context=ctx)
-        order_products_serializer = OrderProductsSerializer(data=data, context=ctx)
+        order_products_serializer = OrderProductsSerializer(data=products, context=ctx, many=True)
 
         order_serializer.is_valid(raise_exception=True)
         order_products_serializer.is_valid(raise_exception=True)

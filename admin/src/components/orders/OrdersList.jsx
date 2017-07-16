@@ -31,6 +31,7 @@ export default class extends React.Component {
           <Grid.Row stretched className='head-row'>
             <Grid.Column>
               Номер заказа
+
             </Grid.Column>
             <Grid.Column>
               Дата заказа

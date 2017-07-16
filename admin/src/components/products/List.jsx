@@ -3,18 +3,23 @@ import {push} from 'react-router-redux';
 import {connect} from 'react-redux';
 import {Grid, Image, Button} from 'semantic-ui-react';
 import {getProductList as getProductListAction} from '../../actions/products/creators/product';
+import {addToCart as addToCartAction} from '../../actions/cart/creators/cart';
 import noPhoto from '../../img/no-photo.png';
+import ListItem from './ListItem';
 
 class List extends React.Component {
   static PropTypes = {
     products: React.PropTypes.array.isRequired,
-    push: React.PropTypes.func.isRequired
+    push: React.PropTypes.func.isRequired,
+    getProductListAction: React.PropTypes.func.isRequired,
+    addToCartAction: React.PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.onClick = this.onClick.bind(this);
+    this.addToCartClick = this.addToCartClick.bind(this);
   }
 
   componentDidMount() {
@@ -25,32 +30,8 @@ class List extends React.Component {
     this.props.push(`/products/${id}`);
   }
 
-  renderItem(product, index) {
-    const click = this.onClick.bind(this, product.id);
-
-    return (
-      <Grid.Row stretched key={index} onClick={click} style={{cursor: 'pointer'}}>
-        <Grid.Column className='companies__title'>
-          <div>
-            <Image src={noPhoto} verticalAlign='middle' />
-          </div>
-        </Grid.Column>
-        <Grid.Column>
-          <div>{product.created_on}</div>
-          <div><strong>{product.title}</strong></div>
-          <div>Арт. {product.code}</div>
-        </Grid.Column>
-        <Grid.Column>
-          {product.quantity}
-        </Grid.Column>
-        <Grid.Column>
-          {product.price} сом.
-        </Grid.Column>
-        <Grid.Column>
-          <Button content='В корзину' color='orange' className='add-to-basket-btn'/>
-        </Grid.Column>
-      </Grid.Row>
-    )
+  addToCartClick(data) {
+    this.props.addToCartAction(data);
   }
 
   render() {
@@ -77,7 +58,7 @@ class List extends React.Component {
               &nbsp;
             </Grid.Column>
           </Grid.Row>
-          {products.map((p, index) => this.renderItem(p, index))}
+          {products.map((p, index) => <ListItem product={p} index={index} submitClick={this.addToCartClick} />)}
         </Grid>
       </div>
     )
@@ -92,4 +73,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {push, getProductListAction})(List);
+export default connect(mapStateToProps, {push, getProductListAction, addToCartAction})(List);

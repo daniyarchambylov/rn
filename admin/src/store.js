@@ -5,6 +5,7 @@ import DevTools from './containers/DevTools';
 import authReducer from './reducer/authReducer';
 import applicationReducer from './reducer/applicationReducer';
 import productsReducer from './reducer/productsReducer';
+import cartReducer from './reducer/cartReducer';
 import { persistState } from 'redux-devtools';
 
 import history from './history'
@@ -29,6 +30,7 @@ const store = createStore(
     auth: authReducer,
     application: applicationReducer,
     products: productsReducer,
+    cart: cartReducer,
     router: routerReducer
   }),
   {},

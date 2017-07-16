@@ -22,6 +22,7 @@ import UserProfile from './components/profile/UserProfile';
 import CompaniesList from './components/companies/CompaniesList';
 import ContactUs from './components/static-pages/ContactUs';
 import OrdersList from './components/orders/OrdersList';
+import Cart from './components/cart/Cart';
 import LazilyLoad, { importLazy } from './components/LazyLoad';
 import SignedInContainer from './containers/SignedIn';
 
@@ -51,6 +52,7 @@ ReactDOM.render(
                 <Route path="/companies" component={CompaniesList}/>
                 <Route path="/contact-us" component={ContactUs}/>
                 <Route path="/orders" component={OrdersList}/>
+                <Route path="/cart" component={Cart}/>
               </Switch>
             </SignedInContainer>
           </Switch>

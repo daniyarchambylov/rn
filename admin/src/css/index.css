@@ -186,6 +186,11 @@
     .sidebar-toggle__line:last-child {
       margin-bottom: 0; }
 
+.cart-btn {
+  cursor: pointer;
+  background: none;
+  border: none; }
+
 .ui.form {
   font-size: 11px; }
 

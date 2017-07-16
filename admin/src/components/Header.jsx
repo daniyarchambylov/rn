@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { Form } from 'semantic-ui-react';
 
 import imgUser from '../img/user-avatar.png';
+import imgCart from '../icons/ic_shopping_cart_white_24px.svg';
 import {sidebarToggle as sidebarToggleAction} from '../actions/creators/sidebar';
 
 class Header extends React.Component {
     static PropTypes = {
         auth: PropTypes.object.isRequired,
+        push: PropTypes.func.isRequired,
         sidebarToggleAction: PropTypes.func.isRequired,
         isSidebarToggled: PropTypes.bool.isRequired
     };
@@ -18,6 +21,7 @@ class Header extends React.Component {
 
         this.sidebarToggle = this.sidebarToggle.bind(this);
         this.dropdownToggle = this.dropdownToggle.bind(this);
+        this.cartClick = this.cartClick.bind(this);
 
         this.state = {
             dropdownToggled: false
@@ -33,6 +37,10 @@ class Header extends React.Component {
         this.setState({
           dropdownToggled: !this.state.dropdownToggled
         })
+    }
+
+    cartClick() {
+        this.props.push('/cart');
     }
 
     render() {
@@ -61,6 +69,9 @@ class Header extends React.Component {
                         <img className='user__img' src={imgUser} alt='' />
                         Екатерина Добрынина
                     </div>
+                    <button className='header__item cart-btn' onClick={this.cartClick}>
+                        <img className='cart__img' src={imgCart} />
+                    </button>
                     <div className={`header__item header__item settings dropdown--parent${settingsCls}`}>
                         <button className='btn btn--transparent settings__btn' onClick={this.dropdownToggle}/>
                         <nav className='dropdown'>
@@ -88,4 +99,4 @@ function mapToProps(state) {
     }
 }
 
-export default connect(mapToProps, {sidebarToggleAction})(Header);
+export default connect(mapToProps, {push, sidebarToggleAction})(Header);

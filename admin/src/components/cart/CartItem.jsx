@@ -1,40 +1,38 @@
 import React from 'react';
 import {Grid, Form, Image, Icon, Input} from 'semantic-ui-react';
+import {connect} from 'react-redux';
+import {removeFromCart as removeFromCartAction, updateQuantity as updateQuantityAction} from '../../actions/cart/creators/cart';
 import noPhoto from '../../img/no-photo.png';
 
-export default class extends React.Component {
+class CartItem extends React.Component {
   static PropTypes = {
     product: React.PropTypes.object.isRequired,
     index: React.PropTypes.number.isRequired,
-    removeClick: React.PropTypes.func.isRequired
+    removeClick: React.PropTypes.func.isRequired,
+    removeFromCartAction: React.PropTypes.func.isRequired,
+    updateQuantityAction: React.PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
 
-    this.onClick = this.onClick.bind(this);
     this.quantityChange = this.quantityChange.bind(this);
-
-    this.state = {
-      quantity: 1
-    };
+    this.onRemoveClick = this.onRemoveClick.bind(this);
   }
 
   quantityChange(e, target) {
     const value = target.value;
+    const {product} = this.props;
 
-    this.setState({
-      quantity: value
-    });
+    this.props.updateQuantityAction({product, quantity: +value});
   }
 
-  onClick() {
-    this.props.removeClick(this.props.product.id);
+  onRemoveClick() {
+    this.props.removeFromCartAction(this.props.product.id);
   }
 
   render() {
     const {product, index} = this.props;
-    const {quantity} = this.state;
 
     return (
       <Grid.Row stretched key={index} style={{cursor: 'pointer'}}>
@@ -50,16 +48,28 @@ export default class extends React.Component {
         </Grid.Column>
         <Grid.Column>
           <Form.Field>
-            <Input value={quantity} type='number' onChange={this.quantityChange}/>
+            <Input value={ product.counter } type='number' onChange={this.quantityChange}/>
           </Form.Field>
         </Grid.Column>
         <Grid.Column>
           {product.price} сом.
         </Grid.Column>
         <Grid.Column>
-          <Icon content='В корзину' color='gray' className='add-to-basket-btn' size='large' name='close' onClick={this.onClick}/>
+          <Icon content='В корзину' color='gray' className='add-to-basket-btn' size='large' name='close' onClick={this.onRemoveClick}/>
         </Grid.Column>
       </Grid.Row>
     )
   }
 }
+
+function mapStateToProps(state) {
+  const products = state.cart.get('products');
+  const totalSum = state.cart.get('totalSum');
+
+  return {
+    products,
+    totalSum,
+  };
+}
+
+export default connect(mapStateToProps, {updateQuantityAction, removeFromCartAction})(CartItem);

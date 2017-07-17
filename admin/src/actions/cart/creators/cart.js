@@ -6,6 +6,12 @@ export function addToCart(data) {
   }
 }
 
+export function updateQuantity(data) {
+  return dispatch => {
+    return dispatch({ type: productActions.FETCH_CHANGE_QUANTITY, data });
+  }
+}
+
 export function removeFromCart(data) {
   return dispatch => {
     return dispatch({ type: productActions.FETCH_REMOVE_FROM_CART, data });

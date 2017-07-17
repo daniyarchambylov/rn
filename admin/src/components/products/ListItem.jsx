@@ -17,6 +17,7 @@ export default class extends React.Component {
   }
 
   onClick() {
+    const product = this.props.product;
     this.props.submitClick(this.props.product);
   }
 

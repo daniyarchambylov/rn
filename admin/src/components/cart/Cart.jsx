@@ -1,25 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Grid, Icon, Message} from 'semantic-ui-react';
 import CartItem from './CartItem';
-import {removeFromCart as removeFromCartAction, clearCart as clearCartAction} from '../../actions/cart/creators/cart';
+import {clearCart as clearCartAction} from '../../actions/cart/creators/cart';
 
 class Cart extends React.Component {
   static PropTypes = {
-    products: React.PropTypes.object,
-    removeFromCartAction: React.PropTypes.func.isRequired,
-    clearCartAction: React.PropTypes.func.isRequired,
+    products: PropTypes.object,
+    clearCartAction: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
-    this.onRemoveClick = this.onRemoveClick.bind(this);
     this.onClearCart = this.onClearCart.bind(this);
-  }
-
-  onRemoveClick(id) {
-    this.props.removeFromCartAction(id);
   }
 
   onClearCart() {
@@ -27,7 +22,8 @@ class Cart extends React.Component {
   }
 
   render() {
-    const {products} = this.props;
+    const {products, totalSum} = this.props;
+
     return (
       <div className='main product'>
         <h1 className='title title--primary'>Создание товара</h1>
@@ -50,11 +46,11 @@ class Cart extends React.Component {
               {products.size > 0 && <Icon color='grey' name='close' onClick={this.onClearCart} size='large'/>}
             </Grid.Column>
           </Grid.Row>
-          {products.map((p, index) => <CartItem product={p} index={index} removeClick={this.onRemoveClick} />)}
+          {products.map((p, index) => <CartItem product={p} key={index} />)}
         </Grid>
         {products.size > 0 && <Grid.Row stretched className='head-row'>
             <Grid.Column>
-              Итого: <span color='orange'>{ products.map(p => 2 * p.price ).reduce((x, y) => x + y) } сом</span>
+              Итого: <span color='orange'>{ totalSum }  сом</span>
             </Grid.Column>
           </Grid.Row>}
         {products.size === 0 && <Message content='Пустая корзина' />}
@@ -65,10 +61,12 @@ class Cart extends React.Component {
 
 function mapStateToProps(state) {
   const products = state.cart.get('products');
+  const totalSum = state.cart.get('totalSum');
 
   return {
-    products
+    products,
+    totalSum,
   };
 }
 
-export default connect(mapStateToProps, {removeFromCartAction, clearCartAction})(Cart);
+export default connect(mapStateToProps, {clearCartAction})(Cart);

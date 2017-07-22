@@ -8,28 +8,37 @@ class SignedInContainer extends React.Component {
   componentDidMount() {
     const { dispatch, currentURL, isSignedIn } = this.props;
 
-    /*
+
     if (!isSignedIn) {
       dispatch(redirectOnSignIn(currentURL));
       dispatch(push('/sign-in'));
     }
-    */
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, currentURL } = this.props;
+    if (!nextProps.isSignedIn) {
+      dispatch(redirectOnSignIn(currentURL));
+      dispatch(push('/sign-in'));
+    }
   }
 
   render() {
     const { isSignedIn } = this.props;
-    //if (isSignedIn) {
-      return <div style={{ display: 'flex' }}>
+
+    if (!isSignedIn) return null;
+    return (
+      <div style={{ display: 'flex' }}>
         <LazilyLoad modules={{ Sidebar: () => importLazy(import('../components/Sidebar')), }}>
           {({ Sidebar }) => (
             <Sidebar />
           )}
         </LazilyLoad>
         { this.props.children }
-        </div>;
-    //} else {
-    //  return null;
-    //}
+      </div>
+    );
+
   }
 }
 

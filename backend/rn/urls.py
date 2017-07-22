@@ -18,4 +18,5 @@ urlpatterns += [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^sign-in/$', obtain_jwt_token),
     url(r'^sign-up/$', account_views.SignUpView.as_view()),
+    url(r'^profile/$', account_views.my_profile),
 ]

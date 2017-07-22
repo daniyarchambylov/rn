@@ -1,8 +1,11 @@
 @import "variables";
 @import "btns";
 
-.header {
+header.header {
   background: $header-bg;
+}
+
+.header {
   text-align: right;
   height: $header-height;
   position: relative;
@@ -89,6 +92,7 @@
       color: #afafaf;
       white-space: nowrap;
       margin: 15px;
+      padding: 0;
 
       &:hover {
         color: #fff;

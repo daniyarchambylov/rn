@@ -7,6 +7,7 @@ import applicationReducer from './reducer/applicationReducer';
 import productsReducer from './reducer/productsReducer';
 import cartReducer from './reducer/cartReducer';
 import { persistState } from 'redux-devtools';
+import { loadState, saveState } from './localStorage'
 
 import history from './history'
 const middleware = routerMiddleware(history);
@@ -14,6 +15,8 @@ const middleware = routerMiddleware(history);
 const enhancers = [];
 
 enhancers.push(applyMiddleware(thunkMiddleware, middleware));
+
+const persistedState = loadState();
 
 if (process.env.NODE_ENV !== 'production') {
   enhancers.push(DevTools.instrument(),
@@ -33,8 +36,15 @@ const store = createStore(
     cart: cartReducer,
     router: routerReducer
   }),
-  {},
+  persistedState,
   compose(...enhancers)
 );
 
+//persistStore(store);
+
+store.subscribe(() => {
+  saveState({
+    auth: store.getState().auth,
+  })
+});
 export default store;

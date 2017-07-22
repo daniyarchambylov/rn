@@ -29,3 +29,20 @@ class UserRoleRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRoleRequest
         fields = '__all__'
+
+
+class UserProfile(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'phone',
+            'first_name',
+            'last_name',
+            'name',
+            'address',
+            'zip_code',
+            'city',
+            'email',
+            'updated_at',
+        ]

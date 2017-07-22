@@ -5,6 +5,7 @@ const initialState = {
   fetching: false,
   signedIn: false,
   redirectTo: null,
+  profile: {},
 };
 
 export default function authReducer(state = initialState, action) {
@@ -26,6 +27,14 @@ export default function authReducer(state = initialState, action) {
         ...state,
         redirectTo: action.payload,
       };
+    case signInAction.SUCCESS_FETCH_PROFILE:
+    case signInAction.SUCCESS_UPDATE_PROFILE:
+      return {
+        ...state,
+        profile: action.payload
+      };
+    case signInAction.SIGN_OUT:
+      return initialState;
     default:
       return state;
   }

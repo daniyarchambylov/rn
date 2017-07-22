@@ -172,3 +172,7 @@ if not DEBUG:
     ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+JWT_AUTH = {
+    'JWT_VERIFY_EXPIRATION': False,
+}

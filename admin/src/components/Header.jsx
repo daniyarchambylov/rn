@@ -7,12 +7,14 @@ import { Form } from 'semantic-ui-react';
 import imgUser from '../img/user-avatar.png';
 import imgCart from '../icons/ic_shopping_cart_white_24px.svg';
 import {sidebarToggle as sidebarToggleAction} from '../actions/creators/sidebar';
+import {signOut as signOutAction} from '../actions/auth/creators/signIn';
 
 class Header extends React.Component {
     static PropTypes = {
         auth: PropTypes.object.isRequired,
         push: PropTypes.func.isRequired,
         sidebarToggleAction: PropTypes.func.isRequired,
+        signOutAction: PropTypes.func.isRequired,
         isSidebarToggled: PropTypes.bool.isRequired
     };
 
@@ -22,6 +24,7 @@ class Header extends React.Component {
         this.sidebarToggle = this.sidebarToggle.bind(this);
         this.dropdownToggle = this.dropdownToggle.bind(this);
         this.cartClick = this.cartClick.bind(this);
+        this.signOutClick = this.signOutClick.bind(this);
 
         this.state = {
             dropdownToggled: false
@@ -43,6 +46,12 @@ class Header extends React.Component {
         this.props.push('/cart');
     }
 
+    signOutClick(e) {
+        e.preventDefault();
+        //this.props.push('/sign-in');
+        this.props.signOutAction();
+    }
+
     render() {
         const {auth} = this.props;
         const {dropdownToggled} = this.state;
@@ -61,7 +70,7 @@ class Header extends React.Component {
                     <span className='sidebar-toggle__line'/>
                     <span className='sidebar-toggle__line'/>
                 </button>
-                {!token && <div className='header-user'>
+                {token && <div className='header-user'>
                     <button className='btn btn--transparent header__item inbox'>
                         <span className='inbox__count'>6</span>
                     </button>
@@ -75,12 +84,12 @@ class Header extends React.Component {
                     <div className={`header__item header__item settings dropdown--parent${settingsCls}`}>
                         <button className='btn btn--transparent settings__btn' onClick={this.dropdownToggle}/>
                         <nav className='dropdown'>
-                            <a href='#' className='dropdown__item'>
+                            <button className='dropdown__item btn--transparent' onClick={() => (this.props.push('/user-profile/'))}>
                                 Редактировать профиль
-                            </a>
-                            <a href='#' className='dropdown__item'>
+                            </button>
+                            <button className='dropdown__item btn--transparent' onClick={this.signOutClick}>
                                 Выход
-                            </a>
+                            </button>
                         </nav>
                     </div>
                 </div>}
@@ -99,4 +108,4 @@ function mapToProps(state) {
     }
 }
 
-export default connect(mapToProps, {push, sidebarToggleAction})(Header);
+export default connect(mapToProps, {push, sidebarToggleAction, signOutAction})(Header);

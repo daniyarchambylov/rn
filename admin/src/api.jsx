@@ -32,15 +32,16 @@ apiRequest.interceptors.response.use((response) => {
 });
 
 
-function addToken(hdrs) {
-  const headers = hdrs || {};
-  const token = store.getState().auth.user.token;
-  return token !== undefined ? { ...headers, Authorization: `Token ${token}` } : headers;
-}
-
 function buildOptions(inputOpts, additionalOpts) {
-  //const headers = addToken(inputOpts.headers);
+  const token = inputOpts.token;
+  delete inputOpts.token;
+
   const headers = {};
+
+  if (token) {
+    headers.Authorization = `JWT ${token}`;
+  }
+
   return {
     ...inputOpts,
     ...additionalOpts || {},
@@ -49,16 +50,14 @@ function buildOptions(inputOpts, additionalOpts) {
 }
 
 export default {
-  fetch: function fetch(endpoint, isAuth = false, params = null, opts = {}) {
+  fetch: function fetch(endpoint, params = null, opts = {}) {
     const options = buildOptions(opts, params);
+    console.log('opts', options)
     return apiRequest.get(endpoint, options);
   },
 
   create: function create(endpoint, data = {}, opts = {}) {
     const options = buildOptions(opts);
-    opts.headers = {
-      Authorization: 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6IiIsInVzZXJuYW1lIjoiOTk2NTU1MDAwMDAwIiwiZXhwIjoxNTAwMTQwMTM5LCJwaG9uZSI6Ijk5NjU1NTAwMDAwMCJ9.fdTfzSVnIoPuW-4QR_S6B6yPOD9U2nSodamALtexROc',
-    };
     return apiRequest.post(endpoint, data, options);
   },
 

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import get_user_model
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, permissions, mixins
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import UserRoleRequest
 from .permissions import UserRoleRequestPermission
-from .serializers import UserCreateSerializer, UserRoleRequestSerializer
+from .serializers import UserCreateSerializer, UserRoleRequestSerializer, UserProfile
 
 User = get_user_model()
 
@@ -35,3 +36,20 @@ class UserRoleRequestsViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+
+@api_view(['GET', 'PATCH', 'PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def my_profile(request, *args, **kwargs):
+    instance = request.user
+    print(request.method, request.data)
+    result = None
+    if request.method == 'GET':
+        serializer = UserProfile(instance, context={'request': request})
+        result = serializer.data
+    elif request.method in ['PATCH', 'PUT']:
+        partial = request.method == 'PATCH'
+        serializer = UserProfile(instance, data=request.data, partial=partial, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        result = serializer.data
+    return Response(result)

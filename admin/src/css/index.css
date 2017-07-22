@@ -63,8 +63,10 @@
   .btn--transparent:focus {
     outline: none; }
 
+header.header {
+  background: #3c8cbb; }
+
 .header {
-  background: #3c8cbb;
   text-align: right;
   height: 40px;
   position: relative;
@@ -135,7 +137,8 @@
       text-decoration: none;
       color: #afafaf;
       white-space: nowrap;
-      margin: 15px; }
+      margin: 15px;
+      padding: 0; }
       .settings .dropdown__item:hover {
         color: #fff; }
   .settings--opened {
@@ -283,7 +286,7 @@
   margin: 0 auto;
   text-transform: uppercase;
   font-size: 11px;
-  width: 125px;
+  min-width: 125px;
   display: inline-block;
   height: 34px; }
 
@@ -298,6 +301,11 @@
 
 .main .ui.toggle.checkbox input:checked ~ .box:before, .main .ui.toggle.checkbox input:checked ~ label:before {
   background-color: #f68236 !important; }
+
+.cart-info {
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 30px; }
 
 .static-page .grid {
   margin-top: 42px; }

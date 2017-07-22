@@ -1,7 +1,7 @@
 import React from 'react';
 import {push} from 'react-router-redux';
 import {connect} from 'react-redux';
-import {Grid, Image, Button} from 'semantic-ui-react';
+import {Grid, Dimmer, Icon, Header, Modal, Button} from 'semantic-ui-react';
 import {getProductList as getProductListAction} from '../../actions/products/creators/product';
 import {addToCart as addToCartAction} from '../../actions/cart/creators/cart';
 import noPhoto from '../../img/no-photo.png';
@@ -10,6 +10,7 @@ import ListItem from './ListItem';
 class List extends React.Component {
   static PropTypes = {
     products: React.PropTypes.array.isRequired,
+    cartProducts: React.PropTypes.array.isRequired,
     push: React.PropTypes.func.isRequired,
     getProductListAction: React.PropTypes.func.isRequired,
     addToCartAction: React.PropTypes.func.isRequired
@@ -20,10 +21,29 @@ class List extends React.Component {
 
     this.onClick = this.onClick.bind(this);
     this.addToCartClick = this.addToCartClick.bind(this);
+    this.setTimer = this.setTimer.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+
+    this._timer = null;
+
+    this.state = {
+      showMsg: false,
+      showInCartMsg: false
+    }
   }
 
   componentDidMount() {
     this.props.getProductListAction();
+  }
+
+  componentWillReceiveProps(nextProps, nextState) {
+    if (this.props.cartProducts !== nextProps.cartProducts) {
+      this.setTimer();
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this._timer);
   }
 
   onClick(id, e) {
@@ -31,14 +51,59 @@ class List extends React.Component {
   }
 
   addToCartClick(data) {
-    this.props.addToCartAction(data);
+    const id = data.id;
+    const isInCart = this.props.cartProducts.has(id);
+
+    if (!isInCart) {
+      this.props.addToCartAction(data);
+
+      this.setState({
+        showMsg: true,
+        showInCartMsg: false
+      })
+    } else {
+      this.setState({
+        showInCartMsg: true
+      })
+    }
+  }
+
+  closeModal() {
+    this.setState({
+      showInCartMsg: false
+    });
+  }
+
+  setTimer() {
+    this._timer != null ? clearTimeout(this._timer) : null;
+
+    this._timer = setTimeout(function(){
+      this.setState({showMsg: false});
+      this._timer = null;
+    }.bind(this), 1000);
   }
 
   render() {
     const {products} = this.props;
+    const {showMsg, showInCartMsg} = this.state;
 
     return (
       <div className='main'>
+        <Dimmer active={showMsg}>
+          <Header as='h2' icon inverted>
+            <Icon name='shop' />
+            Товар добавлен в корзину
+          </Header>
+        </Dimmer>
+        <Modal open={showInCartMsg} basic size='small'>
+          <Header icon='archive' content='Товар уже добавлен в корзину' />
+          <Modal.Actions>
+            <Button color='green' inverted onClick={this.closeModal}>
+              <Icon name='checkmark' /> ок
+            </Button>
+          </Modal.Actions>
+        </Modal>
+
         <h1 className='title title--primary'>Список товаров</h1>
         <Grid columns='equal' className='companies list' celled='internally'>
           <Grid.Row stretched className='head-row'>
@@ -67,9 +132,11 @@ class List extends React.Component {
 
 function mapStateToProps(state) {
   const products = state.products.get('products');
+  const cartProducts = state.cart.get('products');
 
   return {
-    products
+    products,
+    cartProducts
   };
 }
 

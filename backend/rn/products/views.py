@@ -19,10 +19,11 @@ class ProductsViewSet(viewsets.ModelViewSet):
         ctx = {'request': request}
         data['user'] = request.user.id
 
+        print(data)
         serializer = self.get_serializer(data=data, context=ctx)
         serializer.is_valid(raise_exception=True)
 
-        order = serializer.save()
+        serializer.save()
 
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

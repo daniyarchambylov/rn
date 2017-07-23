@@ -44,7 +44,13 @@ class UserManager(models.Manager):
 class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=12, unique=True)
     name = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    address = models.CharField(max_length=255, blank=True)
+    zip_code = models.IntegerField(blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True)
     date_joined = models.DateTimeField(auto_created=True, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(blank=True, db_index=True)
     role = models.CharField(max_length=50, choices=USER_ROLE_CHOICES, default=USER_ROLE_CHOICES[0][0])

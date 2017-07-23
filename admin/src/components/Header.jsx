@@ -56,6 +56,7 @@ class Header extends React.Component {
         const {auth} = this.props;
         const {dropdownToggled} = this.state;
         const token = auth.token;
+        const profile = auth.profile;
 
         const settingsCls = dropdownToggled ? ' settings--opened' : '';
 
@@ -75,8 +76,8 @@ class Header extends React.Component {
                         <span className='inbox__count'>6</span>
                     </button>
                     <div className='header__item user'>
-                        <img className='user__img' src={imgUser} alt='' />
-                        Екатерина Добрынина
+                        {/*<img className='user__img' src={imgUser} alt='' />*/}
+                        {profile.first_name}&nbsp;{profile.last_name}
                     </div>
                     <button className='header__item cart-btn' onClick={this.cartClick}>
                         <img className='cart__img' src={imgCart} />

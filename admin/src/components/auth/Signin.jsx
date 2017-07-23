@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
-import { Form, Input, Button } from 'semantic-ui-react';
+import { Form, Input, Button, Message } from 'semantic-ui-react';
 import {getSignIn as getSignInAction} from '../../actions/auth/creators/signIn';
 
 class SignIn extends React.Component {
   static PropTypes = {
-    getSignInAction: PropTypes.func.isRequired
+    getSignInAction: PropTypes.func.isRequired,
+    errors: PropTypes.any
   };
 
   constructor(props) {
@@ -43,13 +44,16 @@ class SignIn extends React.Component {
   }
 
   render() {
+    const {errors} = this.props;
+    const errorMessages = Object.keys(errors);
     return (
       <div className='auth'>
         <Form className='auth__form'>
-          <Form.Input label='Введите телефон' type='phone' name='phone' onChange={this.onChangeInput} />
+          {errorMessages.length > 0 && <Message error style={{display: 'block'}}>Проверьте правильность введенных данных</Message>}
+          <Form.Input error={ !!errors.phone || !!errors.non_field_errors } label='Введите телефон' type='phone' name='phone' onChange={this.onChangeInput} />
           <Form.Field>
             <label>Введите пароль <a href="#" className='forget-password'>Забыли пароль?</a></label>
-            <Input type='password' name='password' onChange={this.onChangeInput} />
+            <Input type='password' error={ !!errors.password || !!errors.non_field_errors } name='password' onChange={this.onChangeInput} />
           </Form.Field>
           <Form.Field className='text-center'>
             <Button content='Вход' color='orange' onClick={this.submitAuth} />
@@ -63,9 +67,11 @@ class SignIn extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const errors = state.errors['sign-in/'] || {};
   return {
     isSignedIn: state.auth.signedIn,
-    redirectTo: state.auth.redirectTo || '/',
+    redirectTo: state.auth.redirectTo,
+    errors,
     getSignInAction,
   };
 }

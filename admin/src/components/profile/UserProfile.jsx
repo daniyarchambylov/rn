@@ -21,10 +21,6 @@ class UserProfile extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.props.getProfileAction(this.props.token);
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.props.profile !== nextProps.profile) {
       const data = { profile: nextProps.profile };

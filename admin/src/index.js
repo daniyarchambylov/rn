@@ -25,6 +25,7 @@ import OrdersList from './components/orders/OrdersList';
 import Cart from './components/cart/Cart';
 import LazilyLoad, { importLazy } from './components/LazyLoad';
 import SignedInContainer from './containers/SignedIn';
+import SignUp from './components/auth/Signup';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -39,6 +40,7 @@ ReactDOM.render(
 
           <Switch>
             <Route path="/sign-in" component={SignIn}/>
+            <Route path="/sign-up" component={SignUp}/>
             <Route path="/about-us" component={AboutUs}/>
             <Route path="/user-agreement" component={Agreement}/>
 

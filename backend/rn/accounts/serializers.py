@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -14,6 +16,22 @@ class UserCreateSerializer(serializers.ModelSerializer):
             'phone',
             'password'
         ]
+
+    def validate_phone(self, value):
+        if not re.match(r'[0-9\-\(\)\[\]\ +]', value):
+            raise serializers.ValidationError('Неправильный формат ввода.')
+        phone = re.sub(r'[\-\(\)\[\]\ +]','', value)
+        if phone.startswith('0'):
+            phone = '996{}'.format(phone[1:])
+        elif not phone.startswith('996'):
+            phone = '996{}'.format(phone)
+        if len(phone) != 12:
+            raise serializers.ValidationError('Неправильный формат ввода.')
+
+        if User.objects.filter(phone=phone).exists():
+            raise serializers.ValidationError('Пользователь с таким номером телефона уже существует.')
+
+        return phone
 
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['phone'], validated_data['password'])

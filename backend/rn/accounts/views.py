@@ -3,7 +3,10 @@ from django.contrib.auth import get_user_model
 from rest_framework import status, viewsets, permissions, mixins
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.views import APIView
+from rest_framework_jwt.serializers import JSONWebTokenSerializer
+from rest_framework_jwt.utils import jwt_response_payload_handler
 
 from .models import UserRoleRequest
 from .permissions import UserRoleRequestPermission
@@ -15,9 +18,20 @@ User = get_user_model()
 class SignUpView(APIView):
     def post(self, request, format='json'):
         serializer = UserCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        data = {
+            'phone': instance.phone,
+            'password': request.data.get('password')
+        }
+        serializer = JSONWebTokenSerializer(data=data)
+
         if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            user = serializer.object.get('user') or request.user
+            token = serializer.object.get('token')
+            response_data = jwt_response_payload_handler(token, user, request)
+            return Response(response_data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class UserRoleRequestsViewSet(viewsets.ModelViewSet):

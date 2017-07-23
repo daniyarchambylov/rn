@@ -1,4 +1,5 @@
 import store from './store';
+import * as errorsAction from './actions/errors';
 const axios = require('axios');
 const locale = 'ru';
 const baseUrl = 'http://127.0.0.1:8001/';
@@ -20,8 +21,12 @@ apiRequest.interceptors.response.use((response) => {
   }
   if (response.status === 401) {
     //store.dispatch({ type: SUCESS_FETCH_SIGNOUT });
+    const key = response.config.url.replace(response.config.baseURL, '')
+    store.dispatch({type: errorsAction.REGISTER_ERROR, payload: { [ key ] : data } })
     return Promise.reject({ status: 401, errors: data });
   } else if (response.status >= 400) {
+    const key = response.config.url.replace(response.config.baseURL, '')
+    store.dispatch({type: errorsAction.REGISTER_ERROR, payload: { [key] : data } })
     return Promise.reject({
       status: response.status,
       errors: data,

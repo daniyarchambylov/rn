@@ -4,7 +4,7 @@ const initialState = {
   token: undefined,
   fetching: false,
   signedIn: false,
-  redirectTo: null,
+  redirectTo: '/user-profile',
   profile: {},
 };
 
@@ -33,6 +33,14 @@ export default function authReducer(state = initialState, action) {
         ...state,
         profile: action.payload
       };
+    case signInAction.SUCCESS_SIGN_UP:
+      return {
+        ...state,
+        fetching: false,
+        token: action.payload.token,
+        signedIn: true,
+      };
+      break;
     case signInAction.SIGN_OUT:
       return initialState;
     default:

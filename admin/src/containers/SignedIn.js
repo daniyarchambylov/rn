@@ -1,27 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
-import { redirectOnSignIn } from '../actions/auth/creators/signIn';
+import { push as pushAction } from 'react-router-redux';
+import { redirectOnSignIn as redirectOnSignInAction, getProfile as getProfileAction } from '../actions/auth/creators/signIn';
 import LazilyLoad, { importLazy } from '../components/LazyLoad';
 
 class SignedInContainer extends React.Component {
-  componentDidMount() {
-    const { dispatch, currentURL, isSignedIn } = this.props;
+  static PropTypes = {
+    getProfileAction: PropTypes.func.isRequired,
+    redirectOnSignInAction: PropTypes.func.isRequired,
+    pushAction: PropTypes.func.isRequired,
+  };
 
+  componentDidMount() {
+    const { isSignedIn } = this.props;
 
     if (!isSignedIn) {
-      dispatch(redirectOnSignIn(currentURL));
-      dispatch(push('/sign-in'));
+      this.handleUnauthorized()
+    } else {
+      this.props.getProfileAction(this.props.token);
     }
-
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, currentURL } = this.props;
     if (!nextProps.isSignedIn) {
-      dispatch(redirectOnSignIn(currentURL));
-      dispatch(push('/sign-in'));
+      this.handleUnauthorized()
     }
+  }
+
+  handleUnauthorized() {
+    const { currentURL, redirectOnSignInAction, pushAction } = this.props;
+    redirectOnSignInAction(currentURL);
+    pushAction('/sign-in');
   }
 
   render() {
@@ -45,13 +55,13 @@ class SignedInContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     isSignedIn: state.auth.signedIn,
+    token: state.auth.token,
     currentURL: ownProps.location.pathname,
   }
 }
 
-SignedInContainer.PropTypes = {
-  redirectOnSignIn: React.PropTypes.func.isRequired,
-};
-
-
-export default connect(mapStateToProps)(SignedInContainer);
+export default connect(mapStateToProps, {
+  getProfileAction,
+  redirectOnSignInAction,
+  pushAction,
+})(SignedInContainer);

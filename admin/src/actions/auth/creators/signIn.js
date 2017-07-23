@@ -9,6 +9,14 @@ export function getSignIn(data) {
   }
 }
 
+export function signUp(data) {
+  return dispatch => {
+    dispatch({ type: signInActions.SIGN_UP });
+    return API.create(`/sign-up/`, data)
+      .then(data => dispatch({ type: signInActions.SUCCESS_SIGN_UP, payload: data }));
+  }
+}
+
 export function redirectOnSignIn(url) {
   return dispatch => dispatch({ type: signInActions.SET_REDIRECT_URL, payload: url });
 }

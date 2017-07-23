@@ -2,7 +2,7 @@ import store from './store';
 import * as errorsAction from './actions/errors';
 const axios = require('axios');
 const locale = 'ru';
-const baseUrl = 'http://127.0.0.1:8001/';
+const baseUrl = process.NODE_ENV === 'production' ? '/api/' : 'http://127.0.0.1:8001/api/';
 
 const apiRequest = axios.create({
   baseURL: baseUrl,
@@ -57,7 +57,6 @@ function buildOptions(inputOpts, additionalOpts) {
 export default {
   fetch: function fetch(endpoint, params = null, opts = {}) {
     const options = buildOptions(opts, params);
-    console.log('opts', options)
     return apiRequest.get(endpoint, options);
   },
 

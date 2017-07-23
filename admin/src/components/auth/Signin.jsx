@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
@@ -50,14 +51,18 @@ class SignIn extends React.Component {
       <div className='auth'>
         <Form className='auth__form'>
           {errorMessages.length > 0 && <Message error style={{display: 'block'}}>Проверьте правильность введенных данных</Message>}
-          <Form.Input error={ !!errors.phone || !!errors.non_field_errors } label='Введите телефон' type='phone' name='phone' onChange={this.onChangeInput} />
+          <Form.Input error={ !!errors.phone || !!errors.non_field_errors } label='Введите телефон' type='phone' name='phone'
+                      onChange={this.onChangeInput}
+                      placeholder='996555123456' />
           <Form.Field>
             <label>Введите пароль <a href="#" className='forget-password'>Забыли пароль?</a></label>
             <Input type='password' error={ !!errors.password || !!errors.non_field_errors } name='password' onChange={this.onChangeInput} />
           </Form.Field>
           <Form.Field className='text-center'>
             <Button content='Вход' color='orange' onClick={this.submitAuth} />
-            <a href="#" className='registration-btn'>Зарегистрироваться</a>
+            <Link className='registration-btn' to='/sign-up'>
+              Зарегистрироваться
+            </Link>
           </Form.Field>
         </Form>
       </div>

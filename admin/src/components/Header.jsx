@@ -60,6 +60,8 @@ class Header extends React.Component {
 
         const settingsCls = dropdownToggled ? ' settings--opened' : '';
 
+        const userName = !profile.first_name && !profile.last_name ? 'Гость' : profile.first_name + ' ' + profile.last_name;
+
         return (
             <header className='header'>
                 <div className='sidebar-header'>
@@ -77,7 +79,7 @@ class Header extends React.Component {
                     </button>
                     <div className='header__item user'>
                         {/*<img className='user__img' src={imgUser} alt='' />*/}
-                        {profile.first_name}&nbsp;{profile.last_name}
+                        {userName}
                     </div>
                     <button className='header__item cart-btn' onClick={this.cartClick}>
                         <img className='cart__img' src={imgCart} />

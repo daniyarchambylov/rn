@@ -1,8 +1,8 @@
 import React from 'react';
 import {push} from 'react-router-redux';
 import {connect} from 'react-redux';
-import {Grid, Dimmer, Icon, Header, Modal, Button} from 'semantic-ui-react';
-import {getProductList as getProductListAction} from '../../actions/products/creators/product';
+import {Grid, Dimmer, Icon, Header, Modal, Button, Message} from 'semantic-ui-react';
+import {getProductList as getProductListAction, dismissMessage as dismissMessageAction} from '../../actions/products/creators/product';
 import {addToCart as addToCartAction} from '../../actions/cart/creators/cart';
 import noPhoto from '../../img/no-photo.png';
 import ListItem from './ListItem';
@@ -13,7 +13,9 @@ class List extends React.Component {
     cartProducts: React.PropTypes.array.isRequired,
     push: React.PropTypes.func.isRequired,
     getProductListAction: React.PropTypes.func.isRequired,
-    addToCartAction: React.PropTypes.func.isRequired
+    addToCartAction: React.PropTypes.func.isRequired,
+    dismissMessageAction: React.PropTypes.func.isRequired,
+    successMessage: React.PropTypes.string
   };
 
   constructor(props) {
@@ -23,6 +25,7 @@ class List extends React.Component {
     this.addToCartClick = this.addToCartClick.bind(this);
     this.setTimer = this.setTimer.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.onDismissClick = this.onDismissClick.bind(this);
 
     this._timer = null;
 
@@ -74,6 +77,10 @@ class List extends React.Component {
     });
   }
 
+  onDismissClick() {
+    this.props.dismissMessageAction();
+  }
+
   setTimer() {
     this._timer != null ? clearTimeout(this._timer) : null;
 
@@ -84,11 +91,12 @@ class List extends React.Component {
   }
 
   render() {
-    const {products} = this.props;
+    const {products, successMessage} = this.props;
     const {showMsg, showInCartMsg} = this.state;
 
     return (
       <div className='main'>
+        {successMessage && <Message positive onDismiss={this.onDismissClick}>{successMessage}</Message>}
         <Dimmer active={showMsg}>
           <Header as='h2' icon inverted>
             <Icon name='shop' />
@@ -133,11 +141,13 @@ class List extends React.Component {
 function mapStateToProps(state) {
   const products = state.products.get('products');
   const cartProducts = state.cart.get('products');
+  const successMessage = state.products.get('successMessage');
 
   return {
     products,
-    cartProducts
+    cartProducts,
+    successMessage,
   };
 }
 
-export default connect(mapStateToProps, {push, getProductListAction, addToCartAction})(List);
+export default connect(mapStateToProps, {push, getProductListAction, addToCartAction, dismissMessageAction})(List);

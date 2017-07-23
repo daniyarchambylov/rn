@@ -20,34 +20,42 @@ class Product extends React.Component {
     super(props);
 
     this.onControlChange = this.onControlChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       product: this.props.product,
     };
   }
 
-  onControlChange(e) {
+  onControlChange(e, target) {
+    const {product} = this.state;
+    product[target.name] = target.value;
+    console.log(product, target.name, target.value);
     this.setState({
-      [e.target.name]: e.target.value,
+      product
     });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.onSubmitProduct(this.state.product);
   }
 
   renderInput(label, type, name, value) {
     return (
-      <Form.Input label={label} type={type} name={name} onChange={this.onControlChange} value={value}/>
+      <Form.Input label={label} type={type} name={name} onChange={this.onControlChange} defaultValue={value}/>
     );
   }
 
   render() {
     const { product } = this.props;
-    console.log(product.category);
 
     return (
       <Form className='common-form'>
         {this.renderInput('Наименование товара', 'text', 'title', product.title)}
         <Form.Field >
           <label>Категория товара</label>
-          <Select placeholder='Выберите категорию' options={categories} onChange={this.onControlChange} name='category' value={product.category}/>
+          <Select placeholder='Выберите категорию' options={categories} onChange={this.onControlChange} name='category' defaultValue={product.category || ''}/>
         </Form.Field>
         {this.renderInput('Артикуль (штрих-код)', 'text', 'code', product.code)}
         <div className='field field-double'>
@@ -62,25 +70,8 @@ class Product extends React.Component {
           {this.renderInput('Объем', 'text', 'volume', product.volume)}
           {this.renderInput('Цена', 'number', 'price', product.price)}
         </div>
-        <Form.Field className='image-uploads'>
-          <button className='image-uploads__uploader' type='button'>
-            <Image src={uploadImg}/>
-          </button>
-          <button className='image-uploads__uploader' type='button'>
-            <Image src={uploadImg}/>
-          </button>
-          <button className='image-uploads__uploader' type='button'>
-            <Image src={uploadImg}/>
-          </button>
-          <button className='image-uploads__uploader' type='button'>
-            <Image src={uploadImg}/>
-          </button>
-          <button className='image-uploads__uploader' type='button'>
-            <Image src={uploadImg}/>
-          </button>
-        </Form.Field>
         <Form.Field className='text-center'>
-          <Button content='Сохранить' color='orange' onClick={this.props.onSubmitProduct}/>
+          <Button content='Сохранить' color='orange' onClick={this.onSubmit}/>
         </Form.Field>
       </Form>
     );

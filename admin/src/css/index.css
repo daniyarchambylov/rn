@@ -231,7 +231,7 @@ header.header {
     text-transform: uppercase;
     color: #606060; }
   .auth .registration-btn {
-    margin-top: 5px;
+    margin: 5px auto 0;
     display: block;
     color: #f68236;
     font-style: italic; }

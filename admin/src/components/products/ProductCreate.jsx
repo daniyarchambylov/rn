@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { createProduct as createProductAction } from '../../actions/products/creators/product';
-import { Form, Input, Select, Button, Image } from 'semantic-ui-react';
-import uploadImg from '../../img/icon-upload.png';
+import {Dimmer, Loader} from 'semantic-ui-react';
 import Product from './Product';
 
 class ProductCreate extends React.Component {
   static PropTypes = {
+    push: PropTypes.func.isRequired,
     createProductAction: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
+    fetching: PropTypes.bool.isRequired,
+    successMessage: PropTypes.string,
   };
 
   constructor(props) {
@@ -32,20 +36,24 @@ class ProductCreate extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.successMessage) {
+      this.props.push('/products');
+    }
+  }
 
-  onSubmitProduct(e) {
-    e.preventDefault();
-    const { title, code, quantity, created_on, expires_on, weight, volume, price, user } = this.state.product;
-    const data = { title, code, quantity, created_on, expires_on, weight, volume, price, user };
-    console.log(data);
-
-    this.props.createProductAction(data);
+  onSubmitProduct(data) {
+    this.props.createProductAction(data, this.props.token);
   }
 
   render() {
     const { product } = this.state;
+
     return (
       <div className='main product'>
+        <Dimmer active={this.props.fetching}>
+          <Loader />
+        </Dimmer>
         <h1 className='title title--primary'>Создание товара</h1>
         <h3 className='title title--secondary'>Здесь вы можете забить необходимые поля для описания товара</h3>
         <Product product={ product } onSubmitProduct={ this.onSubmitProduct }/>
@@ -53,6 +61,9 @@ class ProductCreate extends React.Component {
     );
   }
 }
-export default connect(null, {
-  createProductAction,
-})(ProductCreate);
+
+export default connect((state) => ({
+  token: state.auth.token,
+  successMessage: state.products.get('successMessage'),
+  fetching: state.products.get('fetching'),
+}), { push, createProductAction, })(ProductCreate);

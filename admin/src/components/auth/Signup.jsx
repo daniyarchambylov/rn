@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 import {Form, Input, Button, Message} from 'semantic-ui-react';
 import {signUp as signUpAction} from '../../actions/auth/creators/signIn';
 import { push as pushAction } from 'react-router-redux';
@@ -60,7 +61,9 @@ class Signup extends React.Component {
           <Form.Input label='Пароль' error={ !!errors.password } type='password' name='password' onChange={this.onChange}/>
           <Form.Field className='text-center'>
             <Button content='Зарегистрироваться' color='orange' onClick={this.onSubmit} />
-            <a href="#" className='registration-btn'>Авторизоваться</a>
+            <Link className='registration-btn' to='/sign-in'>
+              Авторизоваться
+            </Link>
           </Form.Field>
         </Form>
       </div>

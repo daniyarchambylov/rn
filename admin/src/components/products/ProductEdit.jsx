@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {getProductItem as getProductItemAction} from '../../actions/products/creators/product';
-import { Form, Input, Select, Button, Image } from 'semantic-ui-react';
-import uploadImg from '../../img/icon-upload.png';
+import {push} from 'react-router-redux';
+import {getProductItem as getProductItemAction, editProduct as editProductAction} from '../../actions/products/creators/product';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import Product from './Product';
 
 class ProductEdit extends React.Component {
   static PropTypes = {
+    push: PropTypes.func.isRequired,
     getProductItemAction: PropTypes.func.isRequired,
-    product: PropTypes.any
+    editProductAction: PropTypes.func.isRequired,
+    product: PropTypes.any,
+    fetching: PropTypes.bool.isRequired,
+    successMessage: PropTypes.string,
+    token: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -25,27 +30,30 @@ class ProductEdit extends React.Component {
   componentDidMount() {
     this.props.getProductItemAction(this.props.match.params.productId)
       .then(product => {
-
         this.setState({ product })
       })
   }
 
-
-  onSubmitProduct(e) {
-    e.preventDefault();
-    const { title, code, quantity, created_on, expires_on, weight, volume, price, user } = this.state.product;
-    const data = { title, code, quantity, created_on, expires_on, weight, volume, price, user };
-    console.log(data);
-    //
-    //this.props.createProductAction(data);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.successMessage) {
+      this.props.push('/products');
+    }
   }
 
+  onSubmitProduct(data) {
+    this.props.editProductAction(data, this.props.token);
+  }
 
   render() {
     const { product } = this.state;
-    console.log(product)
+    if (!product) {
+      return null;
+    }
     return (
       <div className='main product'>
+        <Dimmer active={this.props.fetching}>
+          <Loader />
+        </Dimmer>
         <h1 className='title title--primary'>Редактирование товара</h1>
         <h3 className='title title--secondary'>Здесь вы можете забить необходимые поля для описания товара</h3>
         <Product product={ product } onSubmitProduct={ this.onSubmitProduct } />
@@ -57,11 +65,18 @@ class ProductEdit extends React.Component {
 function mapStateToProps(state, props) {
   const id = +props.match.params.productId;
   const product = state.products.get('products').get(id);
+  const successMessage = state.products.get('successMessage');
+  const fetching = state.products.get('fetching');
   return {
-    product
+    token: state.auth.token,
+    product,
+    successMessage,
+    fetching
   };
 }
 
 export default connect(mapStateToProps, {
+  push,
   getProductItemAction,
+  editProductAction
 })(ProductEdit);

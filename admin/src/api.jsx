@@ -2,7 +2,7 @@ import store from './store';
 import * as errorsAction from './actions/errors';
 const axios = require('axios');
 const locale = 'ru';
-const baseUrl = process.NODE_ENV === 'production' ? '/api/' : 'http://127.0.0.1:8001/api/';
+const baseUrl = process.env.NODE_ENV === 'production' ? '/api/' : 'http://127.0.0.1:8001/api/';
 
 const apiRequest = axios.create({
   baseURL: baseUrl,
@@ -41,10 +41,17 @@ function buildOptions(inputOpts, additionalOpts) {
   const token = inputOpts.token;
   delete inputOpts.token;
 
-  const headers = {};
+  let headers = {};
 
   if (token) {
     headers.Authorization = `JWT ${token}`;
+  }
+
+  if (inputOpts.headers) {
+    headers = {
+      ...headers,
+      ...inputOpts.headers,
+    }
   }
 
   return {

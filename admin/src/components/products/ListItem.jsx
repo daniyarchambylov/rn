@@ -32,21 +32,21 @@ class ListItem extends React.Component {
     const {product, index} = this.props;
 
     return (
-      <Grid.Row stretched key={index} style={{cursor: 'pointer'}} onClick={this.onItemClick}>
-        <Grid.Column className='companies__title'>
+      <Grid.Row stretched key={index} style={{cursor: 'pointer'}}>
+        <Grid.Column className='companies__title' onClick={this.onItemClick}>
           <div>
             <Image src={noPhoto} verticalAlign='middle' />
           </div>
         </Grid.Column>
-        <Grid.Column>
+        <Grid.Column onClick={this.onItemClick}>
           <div>{product.created_on}</div>
           <div><strong>{product.title}</strong></div>
           <div>Арт. {product.code}</div>
         </Grid.Column>
-        <Grid.Column>
+        <Grid.Column onClick={this.onItemClick}>
           {product.quantity}
         </Grid.Column>
-        <Grid.Column>
+        <Grid.Column onClick={this.onItemClick}>
           {product.price} сом.
         </Grid.Column>
         <Grid.Column>

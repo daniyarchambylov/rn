@@ -1,8 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Grid, Image } from 'semantic-ui-react';
 import noPhoto from '../../img/no-photo.png';
 
 export default class extends React.Component {
+  static PropTypes = {
+    order: PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -21,36 +27,32 @@ export default class extends React.Component {
 
 
   render() {
+    const {order} = this.props;
     const {show} = this.state;
     const btnString = show ? 'Свернуть' : 'Развернуть';
+    console.log(moment(order.created).format('YYYY'));
 
     return (
       <Grid.Row stretched>
         <Grid.Column>
-          123
+          {order.id}
         </Grid.Column>
         <Grid.Column>
-          27.06.2017 16:31
+          {moment(order.created).format('YYYY.MM.DD HH:mm')}
         </Grid.Column>
         <Grid.Column width={6}>
-          {show && <div className='order-items'>
-            <div className='order-item'>
-              <Image src={noPhoto} verticalAlign='top'/> <span><span className='product-name'>Coca-Cola Bottlers.</span> Арт.: <strong>123123</strong></span>
-            </div>
-            <div className='order-item'>
-              <Image src={noPhoto} verticalAlign='top'/> <span><span className='product-name'>Coca-Cola Bottlers.</span> Арт.: <strong>123123</strong></span>
-            </div>
-          </div>}
           <button className='btn--transparent btn-order-toggle' onClick={this.showOrderClick}>{btnString}</button>
         </Grid.Column>
         <Grid.Column>
-          <strong>Выполнен<span className='order-status order-status--complete'/></strong>
+          <strong>
+            Обрабатывается
+          </strong>
         </Grid.Column>
         <Grid.Column>
-          29.06.2017 09:31
+          {order.shipment_date}
         </Grid.Column>
         <Grid.Column>
-          3000
+          {order.total_price}
         </Grid.Column>
       </Grid.Row>
     )

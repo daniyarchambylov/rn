@@ -1,12 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Grid, Image } from 'semantic-ui-react';
+import { getOrders as getOrdersAction } from '../../actions/orders/creators/orders';
 import noPhoto from '../../img/no-photo.png';
 import Pagination from 'react-js-pagination';
-import Order1 from './Order1';
-import Order2 from './Order2';
-import Order3 from './Order3';
+import Order from './Order';
 
-export default class extends React.Component {
+class OrdersList extends React.Component {
+  static PropTypes = {
+    getOrdersAction: PropTypes.func.isRequired,
+    orders: PropTypes.object.isRequired,
+    token: PropTypes.string.isRequired
+  };
+
   constructor (props) {
     super(props);
 
@@ -17,12 +24,19 @@ export default class extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
+  componentDidMount() {
+    const {token} = this.props;
+    this.props.getOrdersAction(token)
+  }
+
   handlePageChange(pageNumber) {
     console.log(`active page is ${pageNumber}`);
     this.setState({activePage: pageNumber});
   }
 
   render() {
+    const {orders} = this.props;
+    console.log(orders);
     return (
       <div className='main'>
         <h1 className='title title--primary'>Список торговых точек</h1>
@@ -31,7 +45,6 @@ export default class extends React.Component {
           <Grid.Row stretched className='head-row'>
             <Grid.Column>
               Номер заказа
-
             </Grid.Column>
             <Grid.Column>
               Дата заказа
@@ -49,10 +62,10 @@ export default class extends React.Component {
               Общая сумма
             </Grid.Column>
           </Grid.Row>
-          <Order1 />
-          <Order2 />
-          <Order3 />
-          <Order3 />
+          {orders.length > 0 && orders.reverse().map((order, index) => {
+            console.log(order);
+            return <Order order={order} key={index} />
+          })}
         </Grid>
 
         <Pagination
@@ -68,3 +81,12 @@ export default class extends React.Component {
     )
   }
 }
+
+function mapToProps(state) {
+  return {
+    token: state.auth.token,
+    orders: state.orders.orders
+  }
+}
+
+export default connect(mapToProps, {getOrdersAction})(OrdersList);

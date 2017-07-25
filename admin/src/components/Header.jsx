@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Form } from 'semantic-ui-react';
+import { Form, Icon } from 'semantic-ui-react';
 
 import imgUser from '../img/user-avatar.png';
-import imgCart from '../icons/ic_shopping_cart_white_24px.svg';
 import {sidebarToggle as sidebarToggleAction} from '../actions/creators/sidebar';
 import {signOut as signOutAction} from '../actions/auth/creators/signIn';
 
@@ -15,6 +14,7 @@ class Header extends React.Component {
         push: PropTypes.func.isRequired,
         sidebarToggleAction: PropTypes.func.isRequired,
         signOutAction: PropTypes.func.isRequired,
+        cart: PropTypes.object.isRequired,
         isSidebarToggled: PropTypes.bool.isRequired
     };
 
@@ -53,10 +53,12 @@ class Header extends React.Component {
     }
 
     render() {
-        const {auth} = this.props;
+        const {auth, cart} = this.props;
         const {dropdownToggled} = this.state;
         const token = auth.token;
         const profile = auth.profile;
+
+        const cartCls = cart.size > 0 ? ' cart-added' : '';
 
         const settingsCls = dropdownToggled ? ' settings--opened' : '';
 
@@ -81,8 +83,8 @@ class Header extends React.Component {
                         {/*<img className='user__img' src={imgUser} alt='' />*/}
                         {userName}
                     </div>
-                    <button className='header__item cart-btn' onClick={this.cartClick}>
-                        <img className='cart__img' src={imgCart} />
+                    <button className={`header__item cart-btn${cartCls}`} disabled={cart.size === 0} onClick={this.cartClick}>
+                        <Icon name='shopping cart' size='big' disabled={cart.size === 0}/>
                     </button>
                     <div className={`header__item header__item settings dropdown--parent${settingsCls}`}>
                         <button className='btn btn--transparent settings__btn' onClick={this.dropdownToggle}/>
@@ -104,10 +106,12 @@ class Header extends React.Component {
 function mapToProps(state) {
     const auth = state.auth;
     const isSidebarToggled = state.application.isSidebarToggled;
+    const cart = state.cart.get('products');
 
     return {
         auth,
-        isSidebarToggled
+        isSidebarToggled,
+        cart
     }
 }
 

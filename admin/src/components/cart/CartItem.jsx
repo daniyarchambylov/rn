@@ -55,7 +55,7 @@ class CartItem extends React.Component {
           {product.price} сом.
         </Grid.Column>
         <Grid.Column>
-          <Icon content='В корзину' color='gray' className='add-to-basket-btn' size='large' name='close' onClick={this.onRemoveClick}/>
+          <Icon content='В корзину' color='grey' className='add-to-basket-btn' size='large' name='close' onClick={this.onRemoveClick}/>
         </Grid.Column>
       </Grid.Row>
     )

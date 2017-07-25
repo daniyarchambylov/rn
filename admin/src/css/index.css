@@ -192,7 +192,10 @@ header.header {
 .cart-btn {
   cursor: pointer;
   background: none;
-  border: none; }
+  border: none;
+  color: #fff; }
+  .cart-btn.cart-added {
+    color: #f68236; }
 
 .ui.form {
   font-size: 11px; }
@@ -270,14 +273,27 @@ header.header {
           margin-left: 1em; } }
 
 .main .image-uploads {
+  max-width: 487px;
   display: flex;
   width: 100%;
   justify-content: flex-start;
+  flex-direction: column;
   flex-wrap: wrap; }
-  .main .image-uploads__uploader {
+  .main .image-uploads__uploader-btn {
     border: none;
-    background: none;
-    margin-bottom: 1em; }
+    background: url("../img/icon-upload.png") no-repeat 0 0;
+    width: 100%;
+    height: 100%;
+    display: block; }
+  .main .image-uploads__uploader {
+    width: 110px;
+    height: 105px;
+    margin: 0 5px 1em;
+    display: inline-block; }
+    .main .image-uploads__uploader input {
+      opacity: 0;
+      position: absolute;
+      z-index: -1; }
 
 .main .ui.orange.button,
 .main .ui.orange.buttons .button {

@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import { push } from 'react-router-redux';
 import {Grid, Icon, Message, Button, Form, Header} from 'semantic-ui-react';
 import CartItem from './CartItem';
-import {clearCart as clearCartAction} from '../../actions/cart/creators/cart';
+import {clearCart as clearCartAction, createOrder as createOderAction} from '../../actions/cart/creators/cart';
 
 class Cart extends React.Component {
   static PropTypes = {
     products: PropTypes.object,
+    push: PropTypes.func.isRequired,
     clearCartAction: PropTypes.func.isRequired,
+    createOderAction: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
+    order: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -17,14 +22,40 @@ class Cart extends React.Component {
     this.onClearCart = this.onClearCart.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.order);
+    if (this.props.order !== nextProps.order && nextProps.order.id) {
+      this.props.clearCartAction();
+      this.props.push('/orders');
+    }
+  }
+
   onClearCart() {
     this.props.clearCartAction();
   }
 
+  createOrder = (e) => {
+    e.preventDefault();
+
+    const { products, totalSum, token} = this.props;
+
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i];
+      products[i].total_price = product.counter * product.price;
+    }
+
+    const data = {
+      products: products.toArray(),
+      total_price: totalSum,
+      shipment_price: 100,
+      shipment_method: 'courier'
+    };
+
+    this.props.createOderAction(data, token)
+  };
+
   render() {
     const {products, totalSum} = this.props;
-
-    console.log(products.toJS());
 
     return (
       <div className='main product'>
@@ -53,25 +84,25 @@ class Cart extends React.Component {
         {products.size === 0 && <Message content='Пустая корзина' />}
         {products.size !== 0 && <Grid.Row stretched className='head-row'>
             <Grid.Column>
-              Итого: <span color='orange'>123   сом</span>
+              Итого: <span color='orange'>{ totalSum } сом</span>
             </Grid.Column>
             <Form className='cart-bottom common-form' style={{margin: '40px auto'}}>
               <Header as='h2' style={{textAlign: 'center'}}>
                 Выбор оплаты
               </Header>
+              <Form.Input label='Способ оплаты' readOnly value='Наличными курьеру'/>
               <div className='cart-info'>
                 <div className=''>
-                  Корзина: 123 сом
+                  Корзина: { totalSum } сом
                 </div>
                 <div className=''>
                   Доставка: 123 сом
                 </div>
                 <div className='' style={{color: '#f68236'}}>
-                  <strong>Итого: 123 сом</strong>
+                  <strong>Итого: { totalSum + 123 } сом</strong>
                 </div>
               </div>
-              <Form.Input label='Способ оплаты' readOnly value='Наличными курьеру'/>
-              <Button color='orange' content='Оформить заказ' className='confirm-cart' style={{display: 'block', marign: '0 auto'}}/>
+              <Button color='orange' content='Оформить заказ' onClick={this.createOrder} className='confirm-cart' style={{display: 'block', marign: '0 auto'}}/>
             </Form>
           </Grid.Row>}
       </div>
@@ -82,11 +113,15 @@ class Cart extends React.Component {
 function mapStateToProps(state) {
   const products = state.cart.get('products');
   const totalSum = state.cart.get('totalSum');
+  const order = state.cart.get('order');
+  const token = state.auth.token;
 
   return {
     products,
+    token,
     totalSum,
+    order
   };
 }
 
-export default connect(mapStateToProps, {clearCartAction})(Cart);
+export default connect(mapStateToProps, {push, clearCartAction, createOderAction})(Cart);

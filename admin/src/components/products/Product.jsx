@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Form, Select, Button, Image } from 'semantic-ui-react';
 import uploadImg from '../../img/icon-upload.png';
 
-
 class Product extends React.Component {
   static PropTypes = {
     createProductAction: PropTypes.func.isRequired,
@@ -29,8 +28,7 @@ class Product extends React.Component {
 
   onControlChange(e, target) {
     const {product} = this.state;
-    product[target.name] = target.value;
-    console.log(product, target.name, target.value);
+    product[target.name] = target.value
     this.setState({
       product
     });
@@ -71,7 +69,7 @@ class Product extends React.Component {
           {this.renderInput('Цена', 'number', 'price', product.price)}
         </div>
         <Form.Field className='text-center'>
-          <Button content='Сохранить' color='orange' onClick={this.onSubmit}/>
+          <Button content='Далее' color='orange' onClick={this.onSubmit}/>
         </Form.Field>
       </Form>
     );

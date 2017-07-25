@@ -5,7 +5,9 @@ export function createProduct(data, token) {
   return dispatch => {
     dispatch({ type: productActions.FETCH_CREATE_PRODUCT });
     return API.create(`/products/`, data, { token })
-      .then(data => dispatch({ type: productActions.SUCCESS_FETCH_CREATE_PRODUCT, payload: data }));
+      .then(data => dispatch({ type: productActions.SUCCESS_FETCH_CREATE_PRODUCT, payload: data }))
+      .then(action => action.payload)
+      ;
   }
 }
 
@@ -30,6 +32,22 @@ export function getProductItem(productId) {
     return API.fetch(`/products/${productId}`)
       .then(data => dispatch({ type: productActions.SUCCESS_FETCH_PRODUCT_ITEM, payload: data }))
       .then(action => action.payload);
+  }
+}
+
+export function uploadImage(data, token) {
+  return dispatch => {
+    const formData = new FormData();
+
+    dispatch({ type: productActions.UPLOAD_IMAGE });
+
+    formData.append('image',data.image);
+    formData.append('product',data.product);
+
+    return API.create(`/product-images/`, formData, { token, headers: {
+      'content-type': 'multipart/form-data',
+    } })
+      .then(data => dispatch({ type: productActions.SUCCESS_UPLOAD_IMAGE, payload: data }))
   }
 }
 

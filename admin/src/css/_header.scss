@@ -170,4 +170,9 @@ header.header {
   cursor: pointer;
   background: none;
   border: none;
+  color: #fff;
+
+  &.cart-added {
+    color: #f68236;
+  }
 }

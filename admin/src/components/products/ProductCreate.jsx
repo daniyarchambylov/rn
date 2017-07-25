@@ -5,6 +5,7 @@ import { push } from 'react-router-redux';
 import { createProduct as createProductAction } from '../../actions/products/creators/product';
 import {Dimmer, Loader} from 'semantic-ui-react';
 import Product from './Product';
+import Uploader from './Uploader';
 
 class ProductCreate extends React.Component {
   static PropTypes = {
@@ -33,21 +34,27 @@ class ProductCreate extends React.Component {
         price: null,
         user: null,
       },
+      showUploader: false
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.successMessage) {
-      this.props.push('/products');
+      //this.props.push('/products');
+      this.setState({
+        showUploader: true
+      });
     }
   }
 
   onSubmitProduct(data) {
-    this.props.createProductAction(data, this.props.token);
+    this.props.createProductAction(data, this.props.token)
+      .then(product => this.setState({ product }));
   }
 
   render() {
-    const { product } = this.state;
+    const { product, showUploader } = this.state;
+    console.log(product);
 
     return (
       <div className='main product'>
@@ -56,7 +63,8 @@ class ProductCreate extends React.Component {
         </Dimmer>
         <h1 className='title title--primary'>Создание товара</h1>
         <h3 className='title title--secondary'>Здесь вы можете забить необходимые поля для описания товара</h3>
-        <Product product={ product } onSubmitProduct={ this.onSubmitProduct }/>
+        {!showUploader && <Product product={ product } onSubmitProduct={ this.onSubmitProduct } showUploader={showUploader} />}
+        {product.id && showUploader && <Uploader productId={product.id} />}
       </div>
     );
   }

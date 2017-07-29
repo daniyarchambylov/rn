@@ -77,7 +77,7 @@ class Header extends React.Component {
                 </button>
                 {token && <div className='header-user'>
                     <button className='btn btn--transparent header__item inbox'>
-                        <span className='inbox__count'>6</span>
+                        {/*<span className='inbox__count'>6</span>*/}
                     </button>
                     <div className='header__item user'>
                         {/*<img className='user__img' src={imgUser} alt='' />*/}

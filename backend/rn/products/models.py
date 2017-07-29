@@ -15,6 +15,16 @@ CATEGORIES_CHOICES = (
 )
 
 
+ORDER_STATUS = (
+    ('processing', 'Обрабатывается'),
+    ('processed', 'Подтвержден'),
+    ('shipped', 'Отправлен'),
+    ('picked-up', 'Получил'),
+    ('complete', 'Выполнен'),
+    ('canceled', 'Отменен'),
+)
+
+
 class Product(models.Model):
     title = models.CharField(verbose_name='Наименование товара', max_length=255)
     category = models.IntegerField(verbose_name='Категория', choices=CATEGORIES_CHOICES, default=0)
@@ -39,6 +49,8 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='orders', verbose_name='Заказы')
     shipment_method = models.CharField(max_length=100, choices=SHIPMENT_CHOICES, blank=True)
+    shipment_date = models.DateTimeField(blank=True, null=True)
+    status = models.CharField(max_length=255, choices=ORDER_STATUS, default=ORDER_STATUS[0][0])
 
 
 class OrderProducts(models.Model):

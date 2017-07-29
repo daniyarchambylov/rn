@@ -3,8 +3,8 @@ from rest_framework import viewsets, permissions, status
 from rest_framework import mixins
 from rest_framework.response import Response
 
-from .models import Product, Order
-from .serializers import ProductsSerializer, OrdersSerializer, OrderProductsSerializer
+from .models import Product, ProductImage, Order
+from .serializers import ProductsSerializer, OrdersSerializer, OrderProductsSerializer, ProductImagesSerializer
 
 
 class ProductsViewSet(viewsets.ModelViewSet):
@@ -29,6 +29,11 @@ class ProductsViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
+class ProductImagesViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductImagesSerializer
+    queryset = ProductImage.objects.all()
+
+
 class OrdersViewSet(mixins.CreateModelMixin,
                     mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
@@ -49,6 +54,9 @@ class OrdersViewSet(mixins.CreateModelMixin,
         data['user'] = request.user.id
 
         products = data.pop('products', [])
+
+        for p in products:
+            p['product'] = p['id']
 
         order_serializer = OrdersSerializer(data=data, context=ctx)
         order_products_serializer = OrderProductsSerializer(data=products, context=ctx, many=True)

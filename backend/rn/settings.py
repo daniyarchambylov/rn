@@ -151,6 +151,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = config['general.static_root']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = config['general.media_root']
+
+
 STATICFILES_DIRS = [
     os.path.join(SRC_DIR, 'static')
 ]

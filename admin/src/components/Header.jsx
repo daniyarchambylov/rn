@@ -52,17 +52,27 @@ class Header extends React.Component {
         this.props.signOutAction();
     }
 
+    getName = () => {
+        const { profile } = this.props.auth;
+        if (!profile.first_name && !profile.last_name) {
+            if (!profile.name) {
+                return 'Гость';
+            }
+            return profile.name;
+        }
+        return `${profile.first_name} ${profile.last_name}`;
+    }
+
     render() {
         const {auth, cart} = this.props;
         const {dropdownToggled} = this.state;
         const token = auth.token;
-        const profile = auth.profile;
 
         const cartCls = cart.size > 0 ? ' cart-added' : '';
 
         const settingsCls = dropdownToggled ? ' settings--opened' : '';
 
-        const userName = !profile.first_name && !profile.last_name ? 'Гость' : profile.first_name + ' ' + profile.last_name;
+        const userName = this.getName();
 
         return (
             <header className='header'>
@@ -83,9 +93,11 @@ class Header extends React.Component {
                         {/*<img className='user__img' src={imgUser} alt='' />*/}
                         {userName}
                     </div>
+                  {auth.role === 'store' &&
                     <button className={`header__item cart-btn${cartCls}`} disabled={cart.size === 0} onClick={this.cartClick}>
                         <Icon name='shopping cart' size='big' disabled={cart.size === 0}/>
-                    </button>
+                    </button>}
+
                     <div className={`header__item header__item settings dropdown--parent${settingsCls}`}>
                         <button className='btn btn--transparent settings__btn' onClick={this.dropdownToggle}/>
                         <nav className='dropdown'>

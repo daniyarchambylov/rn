@@ -12,8 +12,11 @@ class ProductsViewSet(viewsets.ModelViewSet):
     serializer_class = ProductsSerializer
     queryset = Product.objects.prefetch_related('images').all()
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
+        permissions.IsAuthenticated,
     ]
+
+    def get_queryset(self):
+        return super(ProductsViewSet, self).get_queryset().filter(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         data = request.data

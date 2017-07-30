@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import UserItem from "./UserItem"
 import {connect} from "react-redux"
-import {getCompanies as getCompaniesAction} from '../../actions/users/creators/users'
+import {getStores as getStoresAction} from '../../actions/users/creators/users'
 
-class CompaniesList extends React.Component {
+class StoresList extends React.Component {
   static PropTypes = {
-    getCompaniesAction: PropTypes.func.isRequired,
+    getStoresAction: PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -21,22 +21,24 @@ class CompaniesList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getCompaniesAction()
+    this.props.getStoresAction()
   }
 
   handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
     this.setState({activePage: pageNumber});
   }
 
-  renderCompanies = () => {
-    const { companies } = this.props;
-    return Object.values(companies).map((company, ind) => <UserItem user={company} key={ind} />);
+  renderStores = () => {
+    const { stores } = this.props;
+    console.log(stores)
+    return Object.values(stores).map((store, ind) => <UserItem user={store} key={ind} />);
   }
 
   render() {
     return (
       <div className='main'>
-        <h1 className='title title--primary'>Список фирм</h1>
+        <h1 className='title title--primary'>Список торговых точек</h1>
 
         <Grid columns='equal' className='companies list' celled='internally'>
           <Grid.Row stretched className='head-row'>
@@ -45,7 +47,7 @@ class CompaniesList extends React.Component {
             <Grid.Column>Город</Grid.Column>
             <Grid.Column>Адрес</Grid.Column>
           </Grid.Row>
-          {this.renderCompanies()}
+          {this.renderStores()}
         </Grid>
 
         {/*<Pagination*/}
@@ -64,7 +66,7 @@ class CompaniesList extends React.Component {
 }
 
 export default connect((state) => ({
-  companies: state.users.get('companies').toJS(),
+  stores: state.users.get('stores').toJS(),
 }), {
-  getCompaniesAction,
-})(CompaniesList)
+  getStoresAction,
+})(StoresList)

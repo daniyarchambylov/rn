@@ -36,7 +36,7 @@ class List extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getProductListAction();
+    this.props.getProductListAction(this.props.token);
   }
 
   componentWillReceiveProps(nextProps, nextState) {
@@ -91,7 +91,7 @@ class List extends React.Component {
   }
 
   render() {
-    const {products, successMessage} = this.props;
+    const {products, successMessage, role} = this.props;
     const {showMsg, showInCartMsg} = this.state;
 
     return (
@@ -127,11 +127,11 @@ class List extends React.Component {
             <Grid.Column>
               Цена
             </Grid.Column>
-            <Grid.Column>
+            {role === 'store' && <Grid.Column>
               &nbsp;
-            </Grid.Column>
+            </Grid.Column>}
           </Grid.Row>
-          {products.map((p, index) => <ListItem product={p} index={index} submitClick={this.addToCartClick} />)}
+          {products.map((p, index) => <ListItem product={p} index={index} role={this.props.role} submitClick={this.addToCartClick} />)}
         </Grid>
       </div>
     )
@@ -142,11 +142,15 @@ function mapStateToProps(state) {
   const products = state.products.get('products');
   const cartProducts = state.cart.get('products');
   const successMessage = state.products.get('successMessage');
+  const token = state.auth.token;
+  const role = state.auth.profile.role;
 
   return {
     products,
     cartProducts,
     successMessage,
+    token,
+    role,
   };
 }
 

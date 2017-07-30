@@ -14,7 +14,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'phone',
-            'password'
+            'password',
+            'role',
         ]
 
     def validate_phone(self, value):
@@ -34,7 +35,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return phone
 
     def create(self, validated_data):
-        user = User.objects.create_user(validated_data['phone'], validated_data['password'])
+        user = User.objects.create_user(validated_data['phone'], validated_data['password'], role=validated_data['role'])
         return user
 
     def to_representation(self, instance):
@@ -63,4 +64,15 @@ class UserProfile(serializers.ModelSerializer):
             'city',
             'email',
             'updated_at',
+            'role',
+            'image',
+        ]
+
+
+class UserImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'image',
         ]

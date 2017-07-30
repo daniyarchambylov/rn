@@ -9,7 +9,7 @@ class Sidebar extends React.Component {
     };
 
     render() {
-        const {isSidebarToggled} = this.props;
+        const {isSidebarToggled, role} = this.props;
 
         const sidebarCls = isSidebarToggled ? ' sidebar--toggled' : '';
         return (
@@ -25,7 +25,7 @@ class Sidebar extends React.Component {
                     </li>
                     <li className='sidebar-nav__item'>
                         <Link to='/user-profile' className='sidebar-nav__link'>
-                            Профиль компании
+                            Личный кабинет
                         </Link>
                     </li>
                     <li className='sidebar-nav__item'>
@@ -33,27 +33,30 @@ class Sidebar extends React.Component {
                             Мои заказы
                         </Link>
                     </li>
-                    <li className='sidebar-nav__item'>
+                  {role === 'storehouse' && <li className='sidebar-nav__item'>
                         <Link to='/products-create' className='sidebar-nav__link'>
                             Создание товара
                         </Link>
-                    </li>
+                    </li>}
                     <li className='sidebar-nav__item'>
                         <a href='#' className='sidebar-nav__link'>
                             Списки
                         </a>
                         <ul className='sidebar-dropdown'>
-                            <li className='sidebar-dropdown__item'>
-                                <Link to='/companies' className='sidebar-dropdown__link'>
+                          {role === 'storehouse' &&<li className='sidebar-dropdown__item'>
+                                <Link to='/stores' className='sidebar-dropdown__link'>
                                     Список торговых точек
                                 </Link>
-                            </li>
+                            </li>}
+                          {role === 'store' &&
                             <li className='sidebar-dropdown__item'>
-                                <a href='#' className='sidebar-dropdown__link'>Список складов</a>
-                            </li>
-                            <li className='sidebar-dropdown__item'>
-                                <a href='/products' className='sidebar-dropdown__link'>Список товаров</a>
-                            </li>
+                                <Link to='/companies' className='sidebar-dropdown__link'>
+                                    Список фирм
+                                </Link>
+                            </li>}
+                          {role === 'storehouse' && <li className='sidebar-dropdown__item'>
+                              <Link to='/products' className='sidebar-dropdown__link'>Список товаров</Link>
+                            </li>}
                         </ul>
                     </li>
                     <li className='sidebar-nav__item'>
@@ -79,9 +82,11 @@ class Sidebar extends React.Component {
 
 function mapToProps(state) {
     const isSidebarToggled = state.application.isSidebarToggled;
+    const role = state.auth.profile.role;
 
     return {
-        isSidebarToggled
+      isSidebarToggled,
+      role,
     }
 }
 

@@ -20,6 +20,7 @@ import AboutUs from './components/static-pages/About';
 import Agreement from './components/static-pages/Agreement';
 import UserProfile from './components/profile/UserProfile';
 import CompaniesList from './components/companies/CompaniesList';
+import StoresList from './components/companies/StoresList';
 import ContactUs from './components/static-pages/ContactUs';
 import OrdersList from './components/orders/OrdersList';
 import Cart from './components/cart/Cart';
@@ -52,6 +53,7 @@ ReactDOM.render(
                 <Route path="/products-create/" exact component={ProductCreate}/>
                 <Route path="/user-profile" component={UserProfile}/>
                 <Route path="/companies" component={CompaniesList}/>
+                <Route path="/stores" component={StoresList}/>
                 <Route path="/contact-us" component={ContactUs}/>
                 <Route path="/orders" component={OrdersList}/>
                 <Route path="/cart" component={Cart}/>

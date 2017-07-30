@@ -19,17 +19,17 @@ export function editProduct(data, token) {
   }
 }
 
-export function getProductList() {
+export function getProductList(token) {
   return dispatch => {
     dispatch({ type: productActions.FETCH_PRODUCTS_LIST });
-    return API.fetch(`/products/`)
+    return API.fetch(`/products/`, null, {token})
       .then(data => dispatch({ type: productActions.SUCCESS_FETCH_PRODUCTS_LIST, payload: data }));
   }
 }
-export function getProductItem(productId) {
+export function getProductItem(productId, token) {
   return dispatch => {
     dispatch({ type: productActions.FETCH_PRODUCT_ITEM });
-    return API.fetch(`/products/${productId}`)
+    return API.fetch(`/products/${productId}`, null, { token })
       .then(data => dispatch({ type: productActions.SUCCESS_FETCH_PRODUCT_ITEM, payload: data }))
       .then(action => action.payload);
   }

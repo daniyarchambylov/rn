@@ -10,6 +10,7 @@ class ListItem extends React.Component {
     index: React.PropTypes.number.isRequired,
     submitClick: React.PropTypes.func.isRequired,
     push: React.PropTypes.func.isRequired,
+    role: React.PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -29,7 +30,7 @@ class ListItem extends React.Component {
   }
 
   render() {
-    const {product, index} = this.props;
+    const {product, index, role} = this.props;
 
     return (
       <Grid.Row stretched key={index} style={{cursor: 'pointer'}}>
@@ -49,9 +50,9 @@ class ListItem extends React.Component {
         <Grid.Column onClick={this.onItemClick}>
           {product.price} сом.
         </Grid.Column>
-        <Grid.Column>
+        {role === 'store' && <Grid.Column>
           <Button content='В корзину' color='orange' className='add-to-basket-btn' onClick={this.addToBasket}/>
-        </Grid.Column>
+        </Grid.Column>}
       </Grid.Row>
     )
   }

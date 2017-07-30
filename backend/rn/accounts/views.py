@@ -10,7 +10,7 @@ from rest_framework_jwt.utils import jwt_response_payload_handler
 
 from .models import UserRoleRequest
 from .permissions import UserRoleRequestPermission
-from .serializers import UserCreateSerializer, UserRoleRequestSerializer, UserProfile
+from .serializers import UserCreateSerializer, UserRoleRequestSerializer, UserProfile, UserImageSerializer
 
 User = get_user_model()
 
@@ -55,7 +55,6 @@ class UserRoleRequestsViewSet(viewsets.ModelViewSet):
 @permission_classes([permissions.IsAuthenticated])
 def my_profile(request, *args, **kwargs):
     instance = request.user
-    print(request.method, request.data)
     result = None
     if request.method == 'GET':
         serializer = UserProfile(instance, context={'request': request})
@@ -67,3 +66,30 @@ def my_profile(request, *args, **kwargs):
         serializer.save()
         result = serializer.data
     return Response(result)
+
+
+@api_view(['GET', 'PATCH', 'PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def update_image(request, *args, **kwargs):
+    instance = request.user
+    result = None
+    if request.method == 'GET':
+        serializer = UserImageSerializer(instance, context={'request': request})
+        result = serializer.data
+    elif request.method in ['PATCH', 'PUT']:
+        partial = request.method == 'PATCH'
+        serializer = UserImageSerializer(instance, data=request.data, partial=partial, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        result = serializer.data
+    return Response(result)
+
+
+class CompaniesViewset(viewsets.ModelViewSet):
+    queryset = User.objects.filter(role='storehouse')
+    serializer_class = UserProfile
+
+
+class StoresViewset(viewsets.ModelViewSet):
+    queryset = User.objects.filter(role='store')
+    serializer_class = UserProfile

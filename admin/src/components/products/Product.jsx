@@ -53,7 +53,7 @@ class Product extends React.Component {
         {this.renderInput('Наименование товара', 'text', 'title', product.title)}
         <Form.Field >
           <label>Категория товара</label>
-          <Select placeholder='Выберите категорию' options={categories} onChange={this.onControlChange} name='category' defaultValue={product.category || ''}/>
+          <Select placeholder='Выберите категорию' options={categories} onChange={this.onControlChange} name='category' defaultValue={product.role || ''}/>
         </Form.Field>
         {this.renderInput('Артикуль (штрих-код)', 'text', 'code', product.code)}
         <div className='field field-double'>

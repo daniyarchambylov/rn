@@ -25,7 +25,7 @@ class Uploader extends React.Component {
     }
   }
 
-  uploadImage = (e, v) => {
+  uploadImage = (e) => {
     const {productId, token} = this.props;
 
     const data = {

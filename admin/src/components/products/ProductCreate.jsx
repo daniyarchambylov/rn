@@ -24,7 +24,7 @@ class ProductCreate extends React.Component {
     this.state = {
       product: {
         title: null,
-        category: null,
+        role: null,
         code: null,
         quantity: null,
         created_on: null,

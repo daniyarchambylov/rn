@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Form, Button, Message } from 'semantic-ui-react';
-import {getProfile as getProfileAction, updateProfile as updateProfileAction} from '../../actions/auth/creators/signIn';
+import {Form, Button, Message, Image} from 'semantic-ui-react'
+import {
+  getProfile as getProfileAction,
+  updateProfile as updateProfileAction,
+  uploadImage as uploadImageAction,
+} from '../../actions/auth/creators/signIn';
 
 class UserProfile extends React.Component {
   static PropTypes = {
@@ -43,6 +47,7 @@ class UserProfile extends React.Component {
     };
 
     delete profile.updated_at;
+    delete profile.image;
     this.props.updateProfileAction(this.props.token, profile);
   };
 
@@ -56,6 +61,38 @@ class UserProfile extends React.Component {
     });
   };
 
+  onUploadImage = (e) => {
+    const {productId, token} = this.props;
+
+    const data = {
+      product: productId,
+      image: e.target.files[0],
+    };
+
+    this.props.uploadImageAction(data, token)
+      .then(action => {
+        this.setState({image: action.payload.image})
+      })
+  }
+
+  renderProfilePic() {
+    const { image } = this.state.profile;
+    if (image) {
+      return (
+        <div className='image-uploads__uploader' style={{ marginTop: '40px' }}>
+          <Image src={image} style={{maxHeight: '105px'}} />
+        </div>
+      );
+    }
+    return (
+      <div className='image-uploads__uploader' style={{ marginTop: '40px' }}>
+        <label htmlFor='profile-pic' className='image-uploads__uploader-btn'/>
+        <input type='file' id='profile-pic' onChange={this.onUploadImage} />
+      </div>
+    );
+  }
+
+
   render() {
     const {profile, isSaved} = this.state;
 
@@ -68,11 +105,12 @@ class UserProfile extends React.Component {
         <h1 className='title title--primary'>Редактирование профиля</h1>
         <h3 className='title title--secondary'>Здесь вы можете отредактировать ранее заполненные поля</h3>
         { isSaved && <Message content='Профиль сохранен' positive onDismiss={() => (this.setState({ isSaved: false }))} /> }
+        {this.renderProfilePic()}
         <Form className='common-form'>
-          <div className='field field-double'>
+          {(profile.role === 'user') && <div className='field field-double'>
             <Form.Input label='Имя' type='text' defaultValue={profile.first_name} name='first_name' onChange={this.onChange} />
             <Form.Input label='Фамилия' type='text' defaultValue={profile.last_name} name='last_name' onChange={this.onChange}/>
-          </div>
+          </div>}
           <Form.Input label='Название компании' type='text' defaultValue={profile.name} name='name' onChange={this.onChange} />
           <Form.Input label='Адрес доставки' type='text' defaultValue={profile.address} name='address' onChange={this.onChange}/>
           <div className='field field-double'>
@@ -102,4 +140,8 @@ function mapToProps(state) {
   }
 }
 
-export default connect(mapToProps, {getProfileAction, updateProfileAction})(UserProfile);
+export default connect(mapToProps, {
+  getProfileAction,
+  updateProfileAction,
+  uploadImageAction,
+})(UserProfile);

@@ -41,6 +41,15 @@ export default function authReducer(state = initialState, action) {
         signedIn: true,
       };
       break;
+    case signInAction.SUCCESS_UPLOAD_IMAGE:
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          image: action.payload.image,
+        }
+      };
+      break;
     case signInAction.SIGN_OUT:
       return initialState;
     default:

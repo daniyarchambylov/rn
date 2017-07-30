@@ -29,7 +29,7 @@ class ProductEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getProductItemAction(this.props.match.params.productId)
+    this.props.getProductItemAction(this.props.match.params.productId, this.props.token)
       .then(product => {
         this.setState({ product })
       })

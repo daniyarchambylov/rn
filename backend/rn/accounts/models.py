@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 USER_ROLE_CHOICES = (
     ('user', _('Пользователь')),
-    ('storehouse', _('Склад')),
+    ('storehouse', _('Компания')),
     ('store', _('Торговая точка')),
 )
 
@@ -54,6 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(blank=True, db_index=True)
     role = models.CharField(max_length=50, choices=USER_ROLE_CHOICES, default=USER_ROLE_CHOICES[0][0])
+    image = models.ImageField(upload_to='users', null=True, blank=True)
 
     USERNAME_FIELD = 'phone'
 

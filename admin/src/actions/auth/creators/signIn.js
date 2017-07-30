@@ -40,3 +40,17 @@ export function updateProfile(token, data) {
       .then(payload => dispatch({ type: signInActions.SUCCESS_UPDATE_PROFILE, payload }));
   }
 }
+
+export function uploadImage(data, token) {
+  return dispatch => {
+    const formData = new FormData();
+    dispatch({ type: signInActions.UPLOAD_IMAGE });
+
+    formData.append('image',data.image);
+
+    return API.update(`/profile-pic/`, formData, true, { token, headers: {
+      'content-type': 'multipart/form-data',
+    } })
+      .then(data => dispatch({ type: signInActions.SUCCESS_UPLOAD_IMAGE, payload: data }))
+  }
+}

@@ -12,6 +12,7 @@ import { persistState } from 'redux-devtools';
 import { loadState, saveState } from './localStorage'
 
 import history from './history'
+import usersReducer from "./reducer/usersReducer"
 const middleware = routerMiddleware(history);
 
 const enhancers = [];
@@ -38,6 +39,7 @@ const store = createStore(
     cart: cartReducer,
     errors: errorsReducer,
     orders: ordersReducer,
+    users: usersReducer,
     router: routerReducer
   }),
   persistedState,

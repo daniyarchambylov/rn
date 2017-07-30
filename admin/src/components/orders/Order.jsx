@@ -72,6 +72,9 @@ export default class extends React.Component {
         <Grid.Column>
           {moment(order.created).format('YYYY.MM.DD HH:mm')}
         </Grid.Column>
+        <Grid.Column>
+          {order.user_name}
+        </Grid.Column>
         <Grid.Column width={6}>
           {show && <div className='order-items'>
             {this.renderProducts()}

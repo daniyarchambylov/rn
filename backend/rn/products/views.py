@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, permissions, status
 from rest_framework import mixins
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 
 from .models import Product, ProductImage, Order
@@ -76,7 +77,15 @@ class OrdersViewSet(mixins.CreateModelMixin,
 
     @detail_route(methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def products(self, request, pk=None, **kwargs):
-        instance = self.get_object()
+        instance = get_object_or_404(Order, pk=pk)
         products = instance.products.all()
         serializer = OrderProductsSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    @list_route(methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def as_company(self, request, pk=None, **kwargs):
+        orders = Order.objects\
+            .prefetch_related('products', 'products__product', 'products__product__user')\
+            .filter(products__product__user=request.user)
+        serializer = OrdersSerializer(orders, many=True, context={'request': request})
         return Response(serializer.data)

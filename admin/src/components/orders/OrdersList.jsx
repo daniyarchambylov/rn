@@ -26,8 +26,8 @@ class OrdersList extends React.Component {
   }
 
   componentDidMount() {
-    const {token} = this.props;
-    this.props.getOrdersAction(token)
+    const {token, role} = this.props;
+    this.props.getOrdersAction(token, role === 'storehouse')
   }
 
   handlePageChange(pageNumber) {
@@ -36,7 +36,7 @@ class OrdersList extends React.Component {
   }
 
   render() {
-    const {token} = this.props;
+    const {token, role} = this.props;
     const orders = Object.values(this.props.orders)
 
     return (
@@ -51,6 +51,9 @@ class OrdersList extends React.Component {
             <Grid.Column>
               Дата заказа
             </Grid.Column>
+            {role === 'storehouse' && <Grid.Column>
+              Торговая точка
+            </Grid.Column>}
             <Grid.Column width={6}>
               Товары
             </Grid.Column>
@@ -66,7 +69,7 @@ class OrdersList extends React.Component {
           </Grid.Row>
           {orders.length > 0 && orders.reverse().map((order, index) => {
             console.log(order);
-            return <Order order={order} key={index} token={token} getOrderProductsAction={this.props.getOrderProductsAction} />
+            return <Order order={order} key={index} token={token} isStoreHouse={role === 'storehouse'} getOrderProductsAction={this.props.getOrderProductsAction} />
           })}
         </Grid>
 
@@ -87,7 +90,8 @@ class OrdersList extends React.Component {
 function mapToProps(state) {
   return {
     token: state.auth.token,
-    orders: state.orders.orders
+    orders: state.orders.orders,
+    role: state.auth.profile.role,
   }
 }
 

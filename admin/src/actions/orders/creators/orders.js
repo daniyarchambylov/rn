@@ -1,10 +1,11 @@
 import API from '../../../api';
 import * as productActions from '../orders';
 
-export function getOrders(token) {
+export function getOrders(token, isCompany) {
   return dispatch => {
+    const endpoint = isCompany ? '/orders/as_company/' : '/orders/'
     dispatch({ type: productActions.FETCH_ORDERS });
-    return API.fetch(`/orders/`, null, { token })
+    return API.fetch(endpoint, null, { token })
       .then(data => dispatch({ type: productActions.SUCCESS_FETCH_ORDERS, payload: data }));
   }
 }

@@ -36,6 +36,7 @@ class ProductImagesSerializer(serializers.ModelSerializer):
 
 
 class OrdersSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(read_only=True, source='user.name')
     class Meta:
         model = Order
         fields = '__all__'

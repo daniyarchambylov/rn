@@ -58,7 +58,7 @@ class ProductEdit extends React.Component {
         <h1 className='title title--primary'>Редактирование товара</h1>
         <h3 className='title title--secondary'>Здесь вы можете забить необходимые поля для описания товара</h3>
         <Product product={ product } onSubmitProduct={ this.onSubmitProduct } />
-        <Uploader productId={product.id} />
+        <Uploader productId={product.id} images={product.images} />
       </div>
     )
   }

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import viewsets, permissions, status
 from rest_framework import mixins
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 from .models import Product, ProductImage, Order
@@ -9,7 +10,7 @@ from .serializers import ProductsSerializer, OrdersSerializer, OrderProductsSeri
 
 class ProductsViewSet(viewsets.ModelViewSet):
     serializer_class = ProductsSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related('images').all()
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
     ]
@@ -19,7 +20,6 @@ class ProductsViewSet(viewsets.ModelViewSet):
         ctx = {'request': request}
         data['user'] = request.user.id
 
-        print(data)
         serializer = self.get_serializer(data=data, context=ctx)
         serializer.is_valid(raise_exception=True)
 
@@ -69,3 +69,10 @@ class OrdersViewSet(mixins.CreateModelMixin,
 
         headers = self.get_success_headers(order_serializer.data)
         return Response(order_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    @detail_route(methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def products(self, request, pk=None, **kwargs):
+        instance = self.get_object()
+        products = instance.products.all()
+        serializer = OrderProductsSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data)

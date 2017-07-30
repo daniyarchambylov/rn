@@ -35,7 +35,7 @@ class ListItem extends React.Component {
       <Grid.Row stretched key={index} style={{cursor: 'pointer'}}>
         <Grid.Column className='companies__title' onClick={this.onItemClick}>
           <div>
-            <Image src={noPhoto} verticalAlign='middle' />
+            <Image src={product.image || noPhoto} verticalAlign='middle' className='product-image' />
           </div>
         </Grid.Column>
         <Grid.Column onClick={this.onItemClick}>

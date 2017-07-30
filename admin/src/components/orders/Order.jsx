@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Grid, Image } from 'semantic-ui-react';
-import noPhoto from '../../img/no-photo.png';
 
 export default class extends React.Component {
   static PropTypes = {
+    getOrderProductsAction: React.PropTypes.func.isRequired,
     order: PropTypes.object.isRequired
   };
 
@@ -15,22 +15,55 @@ export default class extends React.Component {
     this.showOrderClick = this.showOrderClick.bind(this);
 
     this.state = {
-      show: false
+      show: false,
+      isFetched: false,
+      products: [],
     }
   }
 
   showOrderClick() {
-    this.setState({
-      show: !this.state.show
-    })
+    const { show, isFetched } = this.state;
+    const {getOrderProductsAction, order, token} = this.props
+
+    if (!isFetched) {
+      getOrderProductsAction(order.id, token)
+        .then((data) => {
+        console.log(data)
+          this.setState({
+            show: !show,
+            isFetched: true,
+            products: data,
+          })
+        })
+    } else {
+      this.setState({
+        show: !show
+      });
+    }
   }
+
+  renderProducts = () =>
+    this.state.products.map(product => (
+      <div className='order-item' key={product.id}>
+        <Image src={product.image} verticalAlign='top'/>
+        &nbsp;
+        <span>
+          <span className='product-name'>{product.title}</span>
+          &nbsp;
+          Арт.: <strong>{product.code}</strong>
+          &nbsp;
+          Кол-во: <strong>{product.quantity}</strong>
+
+        </span>
+      </div>
+    ));
+
 
 
   render() {
     const {order} = this.props;
     const {show} = this.state;
     const btnString = show ? 'Свернуть' : 'Развернуть';
-    console.log(moment(order.created).format('YYYY'));
 
     return (
       <Grid.Row stretched>
@@ -41,6 +74,9 @@ export default class extends React.Component {
           {moment(order.created).format('YYYY.MM.DD HH:mm')}
         </Grid.Column>
         <Grid.Column width={6}>
+          {show && <div className='order-items'>
+            {this.renderProducts()}
+          </div>}
           <button className='btn--transparent btn-order-toggle' onClick={this.showOrderClick}>{btnString}</button>
         </Grid.Column>
         <Grid.Column>

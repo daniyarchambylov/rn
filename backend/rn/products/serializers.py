@@ -5,9 +5,28 @@ from .models import Product, ProductImage, Order, OrderProducts
 
 
 class ProductsSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
         fields = '__all__'
+
+    def get_image(self, instance):
+        image = instance.images.first()
+
+        request = self.context.get('request')
+        if image and request:
+            return request.build_absolute_uri(image.image.url)
+        elif image:
+            return image.image.url
+        return None
+
+    def get_images(self, instance):
+        images = instance.images.all()[:5]
+
+        request = self.context.get('request')
+        return map(lambda x: request.build_absolute_uri(x.image.url), images)
 
 
 class ProductImagesSerializer(serializers.ModelSerializer):
@@ -23,8 +42,23 @@ class OrdersSerializer(serializers.ModelSerializer):
 
 
 class OrderProductsSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(source='product.title')
+    code = serializers.CharField(source='product.code')
+    quantity = serializers.CharField(source='product.quantity')
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = OrderProducts
         exclude = [
             'order',
         ]
+
+    def get_image(self, instance):
+        image = instance.product.images.first()
+
+        request = self.context.get('request')
+        if image and request:
+            return request.build_absolute_uri(image.image.url)
+        elif image:
+            return image.image.url
+        return None

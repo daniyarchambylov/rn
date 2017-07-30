@@ -416,6 +416,9 @@ header.header {
 .add-to-basket-btn {
   flex-grow: 0 !important; }
 
+.product-image {
+  max-width: 46px !important; }
+
 #root {
   height: 100%; }
 

@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import UserItem from "./UserItem"
 import {connect} from "react-redux"
+import { push } from 'react-router-redux';
 import {getCompanies as getCompaniesAction} from '../../actions/users/creators/users'
 
 class CompaniesList extends React.Component {
   static PropTypes = {
     getCompaniesAction: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -29,9 +31,8 @@ class CompaniesList extends React.Component {
   }
 
   renderCompanies = () => {
-    const { companies } = this.props;
-    return Object.values(companies).map((company, ind) => <UserItem user={company} key={ind} />);
-  }
+    const { companies, push } = this.props;
+    return Object.values(companies).map((company, ind) => <UserItem user={company} key={ind} push={push} url={`/companies/${company.id}/products`} />);  }
 
   render() {
     return (
@@ -67,4 +68,5 @@ export default connect((state) => ({
   companies: state.users.get('companies').toJS(),
 }), {
   getCompaniesAction,
+  push,
 })(CompaniesList)

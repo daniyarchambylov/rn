@@ -73,7 +73,6 @@ class Header extends React.Component {
         const settingsCls = dropdownToggled ? ' settings--opened' : '';
 
         const userName = this.getName();
-
         return (
             <header className='header'>
                 <div className='sidebar-header'>
@@ -93,7 +92,7 @@ class Header extends React.Component {
                         {/*<img className='user__img' src={imgUser} alt='' />*/}
                         {userName}
                     </div>
-                  {auth.role === 'store' &&
+                  {auth.profile.role === 'store' &&
                     <button className={`header__item cart-btn${cartCls}`} disabled={cart.size === 0} onClick={this.cartClick}>
                         <Icon name='shopping cart' size='big' disabled={cart.size === 0}/>
                     </button>}

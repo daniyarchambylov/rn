@@ -28,7 +28,6 @@ export default class extends React.Component {
     if (!isFetched) {
       getOrderProductsAction(order.id, token)
         .then((data) => {
-        console.log(data)
           this.setState({
             show: !show,
             isFetched: true,

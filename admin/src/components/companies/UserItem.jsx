@@ -3,9 +3,9 @@ import {Grid, Image} from 'semantic-ui-react'
 import noPhoto from '../../img/no-photo.png'
 
 
-const UserItem = ({ user }) => (
+const UserItem = ({ user, push, url }) => (
   <Grid.Row stretched>
-    <Grid.Column className='companies__title'>
+    <Grid.Column className='companies__title'  onClick={() => push(url) }>
       <div>
         <Image src={user.image || noPhoto} verticalAlign='middle' style={{ maxHeight: '50px' }}/>
         &nbsp;&nbsp;&nbsp;&nbsp;

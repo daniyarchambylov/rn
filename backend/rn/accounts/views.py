@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import get_user_model
 from rest_framework import status, viewsets, permissions, mixins
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, detail_route
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.utils import jwt_response_payload_handler
 
+from rn.products.serializers import ProductsSerializer
 from .models import UserRoleRequest
 from .permissions import UserRoleRequestPermission
 from .serializers import UserCreateSerializer, UserRoleRequestSerializer, UserProfile, UserImageSerializer
@@ -88,6 +89,15 @@ def update_image(request, *args, **kwargs):
 class CompaniesViewset(viewsets.ModelViewSet):
     queryset = User.objects.filter(role='storehouse')
     serializer_class = UserProfile
+
+    @detail_route(methods=['GET'], permission_classes=[permissions.IsAuthenticated])
+    def products(self, request, pk=None, **kwargs):
+        instance = self.get_object()
+        products = instance.products.all()
+        print(instance.name)
+        print(products)
+        serializer = ProductsSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data)
 
 
 class StoresViewset(viewsets.ModelViewSet):

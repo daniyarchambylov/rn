@@ -41,10 +41,17 @@ class OrdersSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class OrderProductsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderProducts
+        exclude = [
+            'order',
+        ]
+
+
 class OrderProductsSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source='product.title')
     code = serializers.CharField(source='product.code')
-    quantity = serializers.CharField(source='product.quantity')
     image = serializers.SerializerMethodField()
 
     class Meta:

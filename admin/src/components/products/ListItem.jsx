@@ -11,6 +11,7 @@ class ListItem extends React.Component {
     submitClick: React.PropTypes.func.isRequired,
     push: React.PropTypes.func.isRequired,
     role: React.PropTypes.string.isRequired,
+    hideQuantity: React.PropTypes.boolean,
   };
 
   constructor(props) {
@@ -31,7 +32,7 @@ class ListItem extends React.Component {
 
   render() {
     const {product, index, role} = this.props;
-
+    console.log(this.props.hideQuantity)
     return (
       <Grid.Row stretched key={index} style={{cursor: 'pointer'}}>
         <Grid.Column className='companies__title' onClick={this.onItemClick}>
@@ -44,9 +45,9 @@ class ListItem extends React.Component {
           <div><strong>{product.title}</strong></div>
           <div>Арт. {product.code}</div>
         </Grid.Column>
-        <Grid.Column onClick={this.onItemClick}>
+        {!this.props.hideQuantity && <Grid.Column onClick={this.onItemClick}>
           {product.quantity}
-        </Grid.Column>
+        </Grid.Column>}
         <Grid.Column onClick={this.onItemClick}>
           {product.price} сом.
         </Grid.Column>

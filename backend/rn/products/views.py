@@ -5,7 +5,8 @@ from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 from .models import Product, ProductImage, Order
-from .serializers import ProductsSerializer, OrdersSerializer, OrderProductsSerializer, ProductImagesSerializer
+from .serializers import ProductsSerializer, OrdersSerializer, OrderProductsSerializer, ProductImagesSerializer, \
+    OrderProductsCreateSerializer
 
 
 class ProductsViewSet(viewsets.ModelViewSet):
@@ -62,7 +63,7 @@ class OrdersViewSet(mixins.CreateModelMixin,
             p['product'] = p['id']
 
         order_serializer = OrdersSerializer(data=data, context=ctx)
-        order_products_serializer = OrderProductsSerializer(data=products, context=ctx, many=True)
+        order_products_serializer = OrderProductsCreateSerializer(data=products, context=ctx, many=True)
 
         order_serializer.is_valid(raise_exception=True)
         order_products_serializer.is_valid(raise_exception=True)

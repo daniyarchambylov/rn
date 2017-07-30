@@ -16,6 +16,7 @@ import history from './history';
 import ProductCreate from './components/products/ProductCreate';
 import ProductEdit from './components/products/ProductEdit';
 import Products from './components/products/List';
+import CompanyProductList from './components/products/CompanyProductList';
 import AboutUs from './components/static-pages/About';
 import Agreement from './components/static-pages/Agreement';
 import UserProfile from './components/profile/UserProfile';
@@ -52,7 +53,8 @@ ReactDOM.render(
                 <Route path="/products/:productId" exact component={ProductEdit}/>
                 <Route path="/products-create/" exact component={ProductCreate}/>
                 <Route path="/user-profile" component={UserProfile}/>
-                <Route path="/companies" component={CompaniesList}/>
+                <Route path="/companies" exact component={CompaniesList}/>
+                <Route path="/companies/:id/products" exact component={CompanyProductList} />
                 <Route path="/stores" component={StoresList}/>
                 <Route path="/contact-us" component={ContactUs}/>
                 <Route path="/orders" component={OrdersList}/>

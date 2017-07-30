@@ -42,14 +42,17 @@ class Cart extends React.Component {
     for (let i = 0; i < products.length; i++) {
       const product = products[i];
       products[i].total_price = product.counter * product.price;
+      products[i].quantity = product.counter;
     }
 
     const data = {
-      products: products.toArray(),
+      products,
       total_price: totalSum,
       shipment_price: 100,
       shipment_method: 'courier'
     };
+
+    console.log(products)
 
     this.props.createOderAction(data, token)
   };
@@ -81,8 +84,8 @@ class Cart extends React.Component {
           </Grid.Row>
           {products.map((p, index) => <CartItem product={p} key={index} />)}
         </Grid>
-        {products.size === 0 && <Message content='Пустая корзина' />}
-        {products.size !== 0 && <Grid.Row stretched className='head-row'>
+        {products.length == 0 && <Message content='Пустая корзина' />}
+        {products.length !== 0 && <Grid.Row stretched className='head-row'>
             <Grid.Column>
               Итого: <span color='orange'>{ totalSum } сом</span>
             </Grid.Column>
@@ -96,10 +99,10 @@ class Cart extends React.Component {
                   Корзина: { totalSum } сом
                 </div>
                 <div className=''>
-                  Доставка: 123 сом
+                  Доставка: 100 сом
                 </div>
                 <div className='' style={{color: '#f68236'}}>
-                  <strong>Итого: { totalSum + 123 } сом</strong>
+                  <strong>Итого: { totalSum + 100 } сом</strong>
                 </div>
               </div>
               <Button color='orange' content='Оформить заказ' onClick={this.createOrder} className='confirm-cart' style={{display: 'block', marign: '0 auto'}}/>
@@ -111,7 +114,7 @@ class Cart extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const products = state.cart.get('products');
+  const products = state.cart.get('products').toArray();
   const totalSum = state.cart.get('totalSum');
   const order = state.cart.get('order');
   const token = state.auth.token;

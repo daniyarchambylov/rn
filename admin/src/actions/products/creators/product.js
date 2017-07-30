@@ -26,6 +26,16 @@ export function getProductList(token) {
       .then(data => dispatch({ type: productActions.SUCCESS_FETCH_PRODUCTS_LIST, payload: data }));
   }
 }
+
+export function getCompanyProductList(companyId, token) {
+  return dispatch => {
+    dispatch({ type: productActions.FETCH_COMPANY_PRODUCTS_LIST });
+    return API.fetch(`companies/${companyId}/products/`, null, {token})
+      .then(data => dispatch({ type: productActions.SUCCESS_FETCH_COMPANY_PRODUCTS_LIST, payload: data }));
+  }
+}
+
+
 export function getProductItem(productId, token) {
   return dispatch => {
     dispatch({ type: productActions.FETCH_PRODUCT_ITEM });

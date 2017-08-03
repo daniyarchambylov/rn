@@ -66,6 +66,7 @@ class UserProfile(serializers.ModelSerializer):
             'updated_at',
             'role',
             'image',
+            'is_superuser',
         ]
 
 

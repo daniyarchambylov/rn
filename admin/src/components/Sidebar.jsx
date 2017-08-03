@@ -9,7 +9,7 @@ class Sidebar extends React.Component {
     };
 
     render() {
-        const {isSidebarToggled, role} = this.props;
+        const {isSidebarToggled, role, isAdmin} = this.props;
 
         const sidebarCls = isSidebarToggled ? ' sidebar--toggled' : '';
         return (
@@ -33,7 +33,7 @@ class Sidebar extends React.Component {
                             Мои заказы
                         </Link>
                     </li>
-                  {role === 'storehouse' && <li className='sidebar-nav__item'>
+                  {(role === 'storehouse' || isAdmin) && <li className='sidebar-nav__item'>
                         <Link to='/products-create' className='sidebar-nav__link'>
                             Создание товара
                         </Link>
@@ -43,18 +43,18 @@ class Sidebar extends React.Component {
                             Списки
                         </a>
                         <ul className='sidebar-dropdown'>
-                          {role === 'storehouse' &&<li className='sidebar-dropdown__item'>
+                          {(role === 'storehouse' || isAdmin) && <li className='sidebar-dropdown__item'>
                                 <Link to='/stores' className='sidebar-dropdown__link'>
                                     Список торговых точек
                                 </Link>
                             </li>}
-                          {role === 'store' &&
+                          {(role === 'store'|| isAdmin) &&
                             <li className='sidebar-dropdown__item'>
                                 <Link to='/companies' className='sidebar-dropdown__link'>
                                     Список фирм
                                 </Link>
                             </li>}
-                          {role === 'storehouse' && <li className='sidebar-dropdown__item'>
+                          {(role === 'storehouse' || isAdmin) && <li className='sidebar-dropdown__item'>
                               <Link to='/products' className='sidebar-dropdown__link'>Список товаров</Link>
                             </li>}
                         </ul>
@@ -87,6 +87,7 @@ function mapToProps(state) {
     return {
       isSidebarToggled,
       role,
+      isAdmin: state.auth.profile.is_superuser
     }
 }
 

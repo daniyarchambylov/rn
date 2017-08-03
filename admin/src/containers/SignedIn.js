@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push as pushAction } from 'react-router-redux';
 import { redirectOnSignIn as redirectOnSignInAction, getProfile as getProfileAction } from '../actions/auth/creators/signIn';
+import { getLocations as getLocationsAction } from '../actions/location/creators/location';
 import LazilyLoad, { importLazy } from '../components/LazyLoad';
 
 class SignedInContainer extends React.Component {
@@ -10,10 +11,12 @@ class SignedInContainer extends React.Component {
     getProfileAction: PropTypes.func.isRequired,
     redirectOnSignInAction: PropTypes.func.isRequired,
     pushAction: PropTypes.func.isRequired,
+    getLocationsAction: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    const { isSignedIn } = this.props;
+    const { isSignedIn, getLocationsAction } = this.props;
+    getLocationsAction();
 
     if (!isSignedIn) {
       this.handleUnauthorized()
@@ -63,5 +66,6 @@ function mapStateToProps(state, ownProps) {
 export default connect(mapStateToProps, {
   getProfileAction,
   redirectOnSignInAction,
+  getLocationsAction,
   pushAction,
 })(SignedInContainer);

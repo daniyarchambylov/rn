@@ -8,6 +8,7 @@ import productsReducer from './reducer/productsReducer';
 import cartReducer from './reducer/cartReducer';
 import errorsReducer from './reducer/errorsReducer';
 import ordersReducer from './reducer/ordersReducer';
+import locationsReducer from './reducer/locationsReducer';
 import { persistState } from 'redux-devtools';
 import { loadState, saveState } from './localStorage'
 
@@ -40,6 +41,7 @@ const store = createStore(
     errors: errorsReducer,
     orders: ordersReducer,
     users: usersReducer,
+    locations: locationsReducer,
     router: routerReducer
   }),
   persistedState,

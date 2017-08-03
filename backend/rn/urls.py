@@ -7,6 +7,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from .accounts import views as account_views
 from .products import views as product_views
+from .locations import views as location_views
 
 router = DefaultRouter()
 router.register(r'api/products', product_views.ProductsViewSet)
@@ -24,4 +25,6 @@ urlpatterns += [
     url(r'^api/sign-up/$', account_views.SignUpView.as_view()),
     url(r'^api/profile/$', account_views.my_profile),
     url(r'^api/profile-pic/$', account_views.update_image),
+    url(r'^api/locations/$', location_views.locations_view),
+    url(r'^panel/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -62,6 +62,8 @@ class UserProfile(serializers.ModelSerializer):
             'address',
             'zip_code',
             'city',
+            # 'region',
+            # 'block',
             'email',
             'updated_at',
             'role',

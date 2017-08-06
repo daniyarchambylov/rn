@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(max_length=255, blank=True)
     zip_code = models.IntegerField(blank=True, null=True)
     city = models.CharField(max_length=255, blank=True)
+    location = models.ForeignKey('locations.Location', null=True, blank=True)
     date_joined = models.DateTimeField(auto_created=True, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_staff = models.BooleanField(default=False)

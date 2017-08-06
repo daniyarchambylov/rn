@@ -2,7 +2,7 @@ import store from './store';
 import * as errorsAction from './actions/errors';
 const axios = require('axios');
 const locale = 'ru';
-const baseUrl = process.env.NODE_ENV === 'production' ? '/api/' : 'http://127.0.0.1:8000/api/';
+const baseUrl = process.env.NODE_ENV === 'production' ? '/api/' : 'http://127.0.0.1:8001/api/';
 
 const apiRequest = axios.create({
   baseURL: baseUrl,

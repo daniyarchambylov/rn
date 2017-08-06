@@ -114,6 +114,10 @@ class UserProfile extends React.Component {
           <Form.Input label='Название компании' type='text' defaultValue={profile.name} name='name' onChange={this.onChange} />
           <Form.Input label='Адрес доставки' type='text' defaultValue={profile.address} name='address' onChange={this.onChange}/>
           <div className='field field-double'>
+            <Form.Input label='Город/область' type='text' defaultValue={profile.city} name='city' onChange={this.onChange}/>
+            <Form.Input label='Район' type='text' defaultValue={profile.zip_code} name='zip_code' onChange={this.onChange}/>
+          </div>
+          <div className='field field-double'>
             <Form.Input label='Город' type='text' defaultValue={profile.city} name='city' onChange={this.onChange}/>
             <Form.Input label='Почтовый индекс' type='text' defaultValue={profile.zip_code} name='zip_code' onChange={this.onChange}/>
           </div>

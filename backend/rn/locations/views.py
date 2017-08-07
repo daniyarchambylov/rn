@@ -10,10 +10,10 @@ def locations_view(request):
     all = dict()
 
     for x in cities:
-        all[x.id] = {'id': x.id, 'name': x.name, 'regions': dict()}
+        all[x.id] = {'key': x.id, 'value': x.id, 'text': x.name, 'regions': dict()}
     for x in regions:
-        all[x.parent_id]['regions'][x.id] = {'id': x.id, 'name': x.name, 'blocks': dict()}
+        all[x.parent_id]['regions'][x.id] = {'key': x.id, 'value': x.id, 'text': x.name, 'blocks': dict()}
     for x in blocks:
-        all[x.parent.parent_id]['regions'][x.parent_id]['blocks'][x.id] = {'id': x.id, 'name': x.name}
+        all[x.parent.parent_id]['regions'][x.parent_id]['blocks'][x.id] = {'key': x.id, 'value': x.id, 'text': x.name}
 
     return JsonResponse(all)

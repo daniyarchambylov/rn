@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Form, Button, Message, Image} from 'semantic-ui-react'
+import {Form, Button, Message, Image, Select} from 'semantic-ui-react'
 import {
   getProfile as getProfileAction,
   updateProfile as updateProfileAction,
@@ -18,14 +18,19 @@ class UserProfile extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       profile: props.profile,
       isSaved: false,
+      cities: Object.values(props.location),
+      regions: [],
+      blocks: [],
+      locations: {},
+      selectedCity: null,
+      isRendered: false,
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextState) {
     if (this.props.profile !== nextProps.profile) {
       const data = { profile: nextProps.profile };
 
@@ -33,21 +38,49 @@ class UserProfile extends React.Component {
         data.isSaved = true;
       }
       this.setState({...data});
+    } else if (nextProps.location !== this.props.location) {
+      const cities = Object.values(nextProps.location).map(x => ({ key: x.key, value: x.value, text: x.text }));
+      const regions = nextProps.profile.region ?
+        Object.values(nextProps.location[nextProps.profile.city].regions) : [];
+      const blocks = nextProps.profile.block ?
+        Object
+          .values(nextProps.location[nextProps.profile.city].regions[nextProps.profile.region].blocks)
+          .map(x => ({ key: x.key, value: x.value, text: x.text })) : []
+      ;
+      this.setState({
+        cities,
+        regions,
+        blocks,
+        locations: nextProps.location,
+        isRendered: true,
+      })
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (nextState.profile.updated_at !== this.state.profile.updated_at) || nextState.isSaved !== this.state.isSaved;
+    return (nextState.profile.updated_at !== this.state.profile.updated_at) ||
+      nextState.isSaved !== this.state.isSaved ||
+      nextState.cities.length !== this.state.cities.length ||
+      nextState.blocks.length !== this.state.blocks.length ||
+      nextState.regions.length !== this.state.regions.length;
+  }
+
+  updateLocationsState(city, region, block) {
+
   }
 
   onSubmit = (e) => {
     e.preventDefault();
     const profile = {
       ...this.state.profile,
+      location: this.state.selectedCity,
     };
 
     delete profile.updated_at;
     delete profile.image;
+    delete profile.city;
+    delete profile.region;
+    delete profile.block;
     this.props.updateProfileAction(this.props.token, profile);
   };
 
@@ -60,6 +93,37 @@ class UserProfile extends React.Component {
       profile
     });
   };
+
+  onControlChange = (e, target) => {
+    const { locations, profile } = this.state;
+    const newState = {};
+    switch (target.name) {
+      case 'city':
+        newState.regions = Object.values(locations[target.value].regions).map(x => ({ key: x.key, value: x.value, text: x.text }));
+        newState.blocks = [];
+        newState.selectedCity = target.value;
+
+        profile.city = target.value;
+        profile.region = null;
+        profile.block = null;
+        break;
+      case 'region':
+        newState.blocks = Object.values(locations[profile.city].regions[target.value].blocks).map(x => ({ key: x.key, value: x.value, text: x.text }));
+        newState.selectedCity = target.value;
+        profile.region = target.value;
+        profile.block = null;
+        break;
+      case 'block':
+        newState.selectedCity = target.value;
+        profile.block = target.value;
+        break;
+      default: break;
+    }
+    this.setState({
+      ...newState,
+      profile,
+    })
+  }
 
   onUploadImage = (e) => {
     const {productId, token} = this.props;
@@ -94,11 +158,13 @@ class UserProfile extends React.Component {
 
 
   render() {
-    const {profile, isSaved} = this.state;
+    const {profile, isSaved, cities, regions, blocks } = this.state;
 
     if (profile.id === undefined) {
       return null;
     }
+
+    if (!this.state.isRendered) return null;
 
     return (
       <div className='main product'>
@@ -114,11 +180,12 @@ class UserProfile extends React.Component {
           <Form.Input label='Название компании' type='text' defaultValue={profile.name} name='name' onChange={this.onChange} />
           <Form.Input label='Адрес доставки' type='text' defaultValue={profile.address} name='address' onChange={this.onChange}/>
           <div className='field field-double'>
-            <Form.Input label='Город/область' type='text' defaultValue={profile.city} name='city' onChange={this.onChange}/>
-            <Form.Input label='Район' type='text' defaultValue={profile.zip_code} name='zip_code' onChange={this.onChange}/>
+            <Select placeholder='Город/область' options={ cities } onChange={this.onControlChange} name='city' defaultValue={profile.city || ''} />
+            <Select placeholder='Район' options={ regions } onChange={this.onControlChange} name='region' defaultValue={profile.region || ''} />
           </div>
           <div className='field field-double'>
-            <Form.Input label='Город' type='text' defaultValue={profile.city} name='city' onChange={this.onChange}/>
+            <Select placeholder='Округ' options={  blocks } onChange={this.onControlChange} name='block' defaultValue={profile.block || ''} />
+            {/*<Form.Input label='Город' type='text' defaultValue={profile.city} name='city' onChange={this.onChange}/>*/}
             <Form.Input label='Почтовый индекс' type='text' defaultValue={profile.zip_code} name='zip_code' onChange={this.onChange}/>
           </div>
           <div className='field field-double'>
@@ -138,9 +205,11 @@ class UserProfile extends React.Component {
 function mapToProps(state) {
   const token = state.auth.token;
   const profile = state.auth.profile;
+  const { location } = state.locations;
   return {
     token,
-    profile
+    profile,
+    location,
   }
 }
 

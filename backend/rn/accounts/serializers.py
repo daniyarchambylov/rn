@@ -51,6 +51,10 @@ class UserRoleRequestSerializer(serializers.ModelSerializer):
 
 
 class UserProfile(serializers.ModelSerializer):
+    city = serializers.IntegerField(source='get_city')
+    region = serializers.IntegerField(source='get_region')
+    block = serializers.IntegerField(source='get_block')
+
     class Meta:
         model = User
         fields = [
@@ -61,9 +65,10 @@ class UserProfile(serializers.ModelSerializer):
             'name',
             'address',
             'zip_code',
+            'location',
             'city',
-            # 'region',
-            # 'block',
+            'region',
+            'block',
             'email',
             'updated_at',
             'role',

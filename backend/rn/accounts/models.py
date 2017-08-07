@@ -67,6 +67,31 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.name
 
+    def get_city(self):
+        location = self.location
+        if location is None:
+            return None
+        if location.parent is None:
+            return location.id
+        if location.parent is not None and location.parent.parent is not None:
+            return location.parent.parent.id
+        return location.parent.id
+
+    def get_region(self):
+        location = self.location
+        if location is None:
+            return None
+        if location.parent is not None and location.parent.parent is not None:
+            return location.parent.id
+        return location.id
+
+    def get_block(self):
+        location = self.location
+        if location is None:
+            return None
+        if location.parent is not None and location.parent.parent is not None:
+            return location.id
+
     def save(self, *args, **kwargs):
         if not self.id:
             if self.role == USER_ROLE_CHOICES[0][0]:

@@ -37,7 +37,7 @@ class OrdersList extends React.Component {
 
   render() {
     const {token, role} = this.props;
-    const orders = Object.values(this.props.orders)
+    const orders = Object.values(this.props.orders);
 
     return (
       <div className='main'>
@@ -68,7 +68,6 @@ class OrdersList extends React.Component {
             </Grid.Column>
           </Grid.Row>
           {orders.length > 0 && orders.reverse().map((order, index) => {
-            console.log(order);
             return <Order order={order} key={index} token={token} isStoreHouse={role === 'storehouse'} getOrderProductsAction={this.props.getOrderProductsAction} />
           })}
         </Grid>

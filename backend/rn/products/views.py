@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
+from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, permissions, status
 from rest_framework import mixins
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import detail_route, list_route, api_view, permission_classes
 from rest_framework.response import Response
 
 from .models import Product, ProductImage, Order
 from .serializers import ProductsSerializer, OrdersSerializer, OrderProductsSerializer, ProductImagesSerializer, \
-    OrderProductsCreateSerializer
+    OrderProductsCreateSerializer, ProductsReportSerializer
 
 
 class ProductsViewSet(viewsets.ModelViewSet):
@@ -89,3 +90,43 @@ class OrdersViewSet(mixins.CreateModelMixin,
             .filter(products__product__user=request.user)
         serializer = OrdersSerializer(orders, many=True, context={'request': request})
         return Response(serializer.data)
+
+
+@api_view(['GET', 'PATCH', 'PUT'])
+# @permission_classes([permissions.IsAuthenticated])
+def products_report(request, *args, **kwargs):
+    instance = request.user
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    queryset = Order.objects\
+        .values('products__product_id', 'products__product__title', 'user', 'user__name', 'user__phone',  'products__product__code')\
+        .annotate(Sum('products__quantity'))\
+        .annotate(Sum('products__total_price'))
+        # .filter(products__product__user=instance)
+
+    if start_date and end_date:
+        queryset = queryset.filter(created__range=[start_date, end_date])
+    elif start_date:
+        queryset = queryset.filter(created__gte=start_date)
+    elif end_date:
+        queryset = queryset.filter(created__lte=end_date)
+
+    products = dict()
+
+    for qs in queryset:
+        key = '{}_{}'.format(qs['user'], qs['products__product_id'])
+        if key in products:
+            products[key]['quantity'] += qs['products__quantity__sum']
+            products[key]['total_price'] += qs['products__total_price__sum']
+        else:
+            products[key] = {
+                'title': qs['products__product__title'],
+                'quantity': qs['products__quantity__sum'],
+                'total_price': qs['products__total_price__sum'],
+                'user_name': qs['user__name'],
+                'user_phone': qs['user__phone'],
+                'code': qs['products__product__code'],
+            }
+
+    return Response(products.values())

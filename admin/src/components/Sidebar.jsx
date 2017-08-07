@@ -64,6 +64,17 @@ class Sidebar extends React.Component {
                             О нас
                         </Link>
                     </li>
+                  {role === 'storehouse' && <li className='sidebar-nav__item'>
+                      <Link to='/product-reports' className='sidebar-nav__link'>
+                          Отчет по продажам
+                      </Link>
+                  </li>}
+                  {role === 'storehouse' && <li className='sidebar-nav__item'>
+                      <Link to='/location-settings' className='sidebar-nav__link'>
+                          Охват районов
+                      </Link>
+                  </li>}
+
                     <li className='sidebar-nav__item'>
                         <Link to='/user-agreement' className='sidebar-nav__link'>
                             Пользовательское соглашение

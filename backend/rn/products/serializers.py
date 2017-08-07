@@ -29,6 +29,27 @@ class ProductsSerializer(serializers.ModelSerializer):
         return map(lambda x: request.build_absolute_uri(x.image.url), images)
 
 
+class ProductsReportSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    all_quantity = serializers.IntegerField()
+    all_price = serializers.IntegerField()
+    name = serializers.CharField(source='order_products__order__user__name')
+
+    class Meta:
+        model = Product
+        fields = ['id', 'image', 'title', 'code', 'all_quantity', 'all_price', 'name']
+
+    def get_image(self, instance):
+        image = instance.images.first()
+
+        request = self.context.get('request')
+        if image and request:
+            return request.build_absolute_uri(image.image.url)
+        elif image:
+            return image.image.url
+        return None
+
+
 class ProductImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage

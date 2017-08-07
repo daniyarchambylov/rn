@@ -29,6 +29,7 @@ import LazilyLoad, { importLazy } from './components/LazyLoad';
 import SignedInContainer from './containers/SignedIn';
 import SignUp from './components/auth/Signup';
 import StoreLocations from './components/profile/StoreLocations';
+import ProductsReport from './components/reports/ProductsReport';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -61,6 +62,7 @@ ReactDOM.render(
                 <Route path="/orders" component={OrdersList}/>
                 <Route path="/cart" component={Cart}/>
                 <Route path="/location-settings" component={StoreLocations}/>
+                <Route path="/product-reports" component={ProductsReport}/>
               </Switch>
             </SignedInContainer>
           </Switch>

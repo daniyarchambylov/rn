@@ -7,3 +7,12 @@ export function getLocations() {
       .then(payload => dispatch({ type: locationActions.SUCCESS_FETCH_CITIES, payload }));
   }
 }
+
+export function saveCitiesSettings(token, data) {
+  return dispatch => {
+    return API.update(`/save-cities/`, {
+      filtered_cities: data,
+    }, true, { token })
+      .then(payload => dispatch({ type: locationActions.SAVE_CITIES_SETTINGS, payload }));
+  }
+}

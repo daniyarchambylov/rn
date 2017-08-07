@@ -92,5 +92,17 @@ body {
 }
 
 .sidebar {
-  flex-grow: 1px;
+  flex-grow: 1;
+}
+
+.location-settings {
+  .common-form {
+    max-width: initial !important;
+    .field {
+      margin: 0 1rem 2rem 1rem;
+    }
+  }
+  .field {
+    display: inline-block;
+  }
 }

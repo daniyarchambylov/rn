@@ -26,5 +26,6 @@ urlpatterns += [
     url(r'^api/profile/$', account_views.my_profile),
     url(r'^api/profile-pic/$', account_views.update_image),
     url(r'^api/locations/$', location_views.locations_view),
+    url(r'^api/save-cities/$', account_views.update_filtered_cities),
     url(r'^panel/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

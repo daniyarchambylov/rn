@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.postgres.fields.jsonb import JSONField
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -56,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=True, db_index=True)
     role = models.CharField(max_length=50, choices=USER_ROLE_CHOICES, default=USER_ROLE_CHOICES[0][0])
     image = models.ImageField(upload_to='users', null=True, blank=True)
+    filtered_cities = JSONField(default=[])
 
     USERNAME_FIELD = 'phone'
 

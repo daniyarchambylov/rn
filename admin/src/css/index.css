@@ -485,4 +485,12 @@ body {
   flex-grow: 1; }
 
 .sidebar {
-  flex-grow: 1px; }
+  flex-grow: 1; }
+
+.location-settings .common-form {
+  max-width: initial !important; }
+  .location-settings .common-form .field {
+    margin: 0 1rem 2rem 1rem; }
+
+.location-settings .field {
+  display: inline-block; }

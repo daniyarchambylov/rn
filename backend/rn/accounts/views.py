@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.utils import jwt_response_payload_handler
 
+from rn.accounts.serializers import UserFilteredCitiesSerializer
 from rn.products.serializers import ProductsSerializer
 from .models import UserRoleRequest
 from .permissions import UserRoleRequestPermission
@@ -86,6 +87,21 @@ def update_image(request, *args, **kwargs):
     return Response(result)
 
 
+@api_view(['PATCH'])
+@permission_classes([permissions.IsAuthenticated])
+def update_filtered_cities(request, *args, **kwargs):
+    instance = request.user
+    data = request.data.copy()
+    print(data)
+    data['id'] = instance.id
+    # print(data)
+    serializer = UserFilteredCitiesSerializer(instance, data=data, partial=True, context={'request': request})
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    result = serializer.data
+    return Response(result)
+
+
 class CompaniesViewset(viewsets.ModelViewSet):
     queryset = User.objects.filter(role='storehouse')
     serializer_class = UserProfile
@@ -103,3 +119,14 @@ class CompaniesViewset(viewsets.ModelViewSet):
 class StoresViewset(viewsets.ModelViewSet):
     queryset = User.objects.filter(role='store')
     serializer_class = UserProfile
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = super(StoresViewset, self).get_queryset()
+        user = self.request.user
+        print('+++++++++++++++++++', isinstance(user.filtered_cities, list))
+        if not user.is_staff:
+            print('------------------')
+            queryset = queryset.filter(location__in=user.filtered_cities)
+
+        return queryset

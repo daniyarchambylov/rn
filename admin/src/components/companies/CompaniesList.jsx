@@ -10,6 +10,7 @@ class CompaniesList extends React.Component {
   static PropTypes = {
     getCompaniesAction: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
   }
 
   constructor (props) {
@@ -23,7 +24,7 @@ class CompaniesList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getCompaniesAction()
+    this.props.getCompaniesAction(this.props.token)
   }
 
   handlePageChange(pageNumber) {
@@ -65,6 +66,7 @@ class CompaniesList extends React.Component {
 }
 
 export default connect((state) => ({
+  token: state.auth.token,
   companies: state.users.get('companies').toJS(),
 }), {
   getCompaniesAction,

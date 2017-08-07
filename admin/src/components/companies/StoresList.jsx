@@ -8,7 +8,8 @@ import {getStores as getStoresAction} from '../../actions/users/creators/users'
 class StoresList extends React.Component {
   static PropTypes = {
     getStoresAction: PropTypes.func.isRequired,
-  }
+    token: PropTypes.string.isRequired,
+  };
 
   constructor (props) {
     super(props);
@@ -21,19 +22,14 @@ class StoresList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getStoresAction()
+    this.props.getStoresAction(this.props.token);
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({activePage: pageNumber});
   }
 
-  renderStores = () => {
-    const { stores } = this.props;
-    console.log(stores)
-    return Object.values(stores).map((store, ind) => <UserItem user={store} key={ind} />);
-  }
+  renderStores = () => Object.values(this.props.stores).map((store, ind) => <UserItem user={store} key={ind} />);
 
   render() {
     return (
@@ -66,6 +62,7 @@ class StoresList extends React.Component {
 }
 
 export default connect((state) => ({
+  token: state.auth.token,
   stores: state.users.get('stores').toJS(),
 }), {
   getStoresAction,

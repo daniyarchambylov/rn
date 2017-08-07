@@ -74,6 +74,7 @@ class UserProfile(serializers.ModelSerializer):
             'role',
             'image',
             'is_superuser',
+            'filtered_cities',
         ]
 
 
@@ -83,4 +84,15 @@ class UserImageSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'image',
+        ]
+
+
+class UserFilteredCitiesSerializer(serializers.ModelSerializer):
+    filtered_cities = serializers.JSONField()
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'filtered_cities',
         ]

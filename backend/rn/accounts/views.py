@@ -124,9 +124,7 @@ class StoresViewset(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super(StoresViewset, self).get_queryset()
         user = self.request.user
-        print('+++++++++++++++++++', isinstance(user.filtered_cities, list))
         if not user.is_staff:
-            print('------------------')
             queryset = queryset.filter(location__in=user.filtered_cities)
 
         return queryset

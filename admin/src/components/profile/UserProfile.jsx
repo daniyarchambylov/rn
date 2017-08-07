@@ -26,7 +26,6 @@ class UserProfile extends React.Component {
       blocks: [],
       locations: {},
       selectedCity: null,
-      isRendered: false,
     }
   }
 
@@ -52,7 +51,6 @@ class UserProfile extends React.Component {
         regions,
         blocks,
         locations: nextProps.location,
-        isRendered: true,
       })
     }
   }
@@ -163,8 +161,6 @@ class UserProfile extends React.Component {
     if (profile.id === undefined) {
       return null;
     }
-
-    if (!this.state.isRendered) return null;
 
     return (
       <div className='main product'>

@@ -120,15 +120,19 @@ class List extends React.Component {
             <Grid.Column className='companies__title'>
               Товар
             </Grid.Column>
-            <Grid.Column>
-              Описание
+            <Grid.Column className='companies__info'>
+              <Grid.Row stretched>
+                <Grid.Column>
+                  Описание
+                </Grid.Column>
+                <Grid.Column>
+                  Цена
+                </Grid.Column>
+                {role === 'store' && <Grid.Column>
+                  &nbsp;
+                </Grid.Column>}
+              </Grid.Row>
             </Grid.Column>
-            <Grid.Column>
-              Цена
-            </Grid.Column>
-            {role === 'store' && <Grid.Column>
-              &nbsp;
-            </Grid.Column>}
           </Grid.Row>
           {products.map((p, index) => <ListItem product={p} key={index} hideQuantity role={this.props.role} submitClick={this.addToCartClick} />)}
         </Grid>

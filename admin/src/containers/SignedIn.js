@@ -42,7 +42,7 @@ class SignedInContainer extends React.Component {
 
     if (!isSignedIn) return null;
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', height: '100%' }}>
         <LazilyLoad modules={{ Sidebar: () => importLazy(import('../components/Sidebar')), }}>
           {({ Sidebar }) => (
             <Sidebar />

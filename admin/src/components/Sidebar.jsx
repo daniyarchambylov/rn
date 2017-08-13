@@ -3,9 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import {sidebarToggle as sidebarToggleAction} from '../actions/creators/sidebar';
+
 class Sidebar extends React.Component {
     static PropTypes = {
-        isSidebarToggled: PropTypes.bool.isRequired
+        isSidebarToggled: PropTypes.bool.isRequired,
+        sidebarToggleAction: PropTypes.func.isRequired
+    };
+
+    closeSidebar = () => {
+        this.props.sidebarToggleAction(false)
     };
 
     render() {
@@ -13,7 +20,7 @@ class Sidebar extends React.Component {
 
         const sidebarCls = isSidebarToggled ? ' sidebar--toggled' : '';
         return (
-            <aside className={`sidebar${sidebarCls}`}>
+            <aside className={`sidebar${sidebarCls}`} onClick={this.closeSidebar}>
                 <ul className='sidebar-nav'>
                     <li className='sidebar-nav__item sidebar-nav__item--main'>
                         Навигация
@@ -59,11 +66,6 @@ class Sidebar extends React.Component {
                             </li>}
                         </ul>
                     </li>
-                    <li className='sidebar-nav__item'>
-                        <Link to='/about-us' className='sidebar-nav__link'>
-                            О нас
-                        </Link>
-                    </li>
                   {role === 'storehouse' && <li className='sidebar-nav__item'>
                       <Link to='/product-reports' className='sidebar-nav__link'>
                           Отчет по продажам
@@ -102,4 +104,4 @@ function mapToProps(state) {
     }
 }
 
-export default connect(mapToProps)(Sidebar);
+export default connect(mapToProps, {sidebarToggleAction})(Sidebar);

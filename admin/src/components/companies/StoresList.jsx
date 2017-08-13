@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
+//import { push } from 'react-router-redux';
 import UserItem from "./UserItem"
 import {connect} from "react-redux"
 import {getStores as getStoresAction} from '../../actions/users/creators/users'
@@ -9,6 +10,7 @@ class StoresList extends React.Component {
   static PropTypes = {
     getStoresAction: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
+    push: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -39,9 +41,13 @@ class StoresList extends React.Component {
         <Grid columns='equal' className='companies list' celled='internally'>
           <Grid.Row stretched className='head-row'>
             <Grid.Column className='companies__title'>Название</Grid.Column>
-            <Grid.Column>Телефон</Grid.Column>
-            <Grid.Column>Город</Grid.Column>
-            <Grid.Column>Адрес</Grid.Column>
+            <Grid.Column className='companies__info'>
+              <Grid.Row stretched>
+                <Grid.Column>Телефон</Grid.Column>
+                <Grid.Column>Город</Grid.Column>
+                <Grid.Column>Адрес</Grid.Column>
+              </Grid.Row>
+            </Grid.Column>
           </Grid.Row>
           {this.renderStores()}
         </Grid>
@@ -63,6 +69,7 @@ class StoresList extends React.Component {
 
 export default connect((state) => ({
   token: state.auth.token,
+  //push,
   stores: state.users.get('stores').toJS(),
 }), {
   getStoresAction,

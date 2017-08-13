@@ -79,11 +79,11 @@ class Header extends React.Component {
                     <span className='sidebar-header__name'>RN.KG</span>
                     <span className='sidebar-header__slogan'>Группа районых магазов</span>
                 </div>
-                <button className='sidebar-toggle' onClick={this.sidebarToggle}>
+                {token && <button className='sidebar-toggle' onClick={this.sidebarToggle}>
                     <span className='sidebar-toggle__line'/>
                     <span className='sidebar-toggle__line'/>
                     <span className='sidebar-toggle__line'/>
-                </button>
+                </button>}
                 {token && <div className='header-user'>
                     <button className='btn btn--transparent header__item inbox'>
                         {/*<span className='inbox__count'>6</span>*/}

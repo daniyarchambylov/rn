@@ -31,7 +31,6 @@ class OrdersList extends React.Component {
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({activePage: pageNumber});
   }
 
@@ -46,25 +45,41 @@ class OrdersList extends React.Component {
         <Grid columns='equal' className='list orders' celled='internally'>
           <Grid.Row stretched className='head-row'>
             <Grid.Column>
-              Номер заказа
+              <Grid.Row stretched className='orders__column-row'>
+                <Grid.Column className='orders__id'>
+                  Номер заказа
+                </Grid.Column>
+                <Grid.Column>
+                  Дата заказа
+                </Grid.Column>
+              </Grid.Row>
             </Grid.Column>
             <Grid.Column>
-              Дата заказа
+              <Grid.Row stretched className='orders__column-row'>
+                {role === 'storehouse' && <Grid.Column>
+                  Торговая точка
+                </Grid.Column>}
+                <Grid.Column>
+                  Статус
+                </Grid.Column>
+              </Grid.Row>
             </Grid.Column>
-            {role === 'storehouse' && <Grid.Column>
-              Торговая точка
-            </Grid.Column>}
-            <Grid.Column width={6}>
-              Товары
+            <Grid.Column className='orders__products'>
+              <Grid.Row stretched className='orders__column-row'>
+                <Grid.Column>
+                  Товары
+                </Grid.Column>
+              </Grid.Row>
             </Grid.Column>
             <Grid.Column>
-              Статус
-            </Grid.Column>
-            <Grid.Column>
-              Дата отправки
-            </Grid.Column>
-            <Grid.Column>
-              Общая сумма
+              <Grid.Row stretched className='orders__column-row'>
+                <Grid.Column>
+                  Дата отправки
+                </Grid.Column>
+                <Grid.Column>
+                  Общая сумма
+                </Grid.Column>
+              </Grid.Row>
             </Grid.Column>
           </Grid.Row>
           {orders.length > 0 && orders.reverse().map((order, index) => {

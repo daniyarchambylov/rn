@@ -54,7 +54,6 @@ class ProductCreate extends React.Component {
 
   render() {
     const { product, showUploader } = this.state;
-    console.log(product);
 
     return (
       <div className='main product'>

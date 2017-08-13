@@ -27,11 +27,128 @@
   .image {
     width: 30px;
   }
+
+  .column {
+    text-align: left;
+  }
+
+  > .row {
+    > .column {
+      &:nth-child(2),
+      &:first-child {
+        @media all and (max-width: 992px) {
+          width: 50% !important;
+        }
+      }
+      &:last-child,
+      &:nth-child(3) {
+        @media all and (max-width: 992px) {
+          width: 100% !important;
+        }
+      }
+    }
+  }
+
+  .row {
+    @media all and (max-width: 992px) {
+      flex-direction: column;
+    }
+  }
+
+  .head-row {
+    @media all and (max-width: 992px) {
+      display: none !important;
+    }
+  }
+
+  &__products {
+    width: 37.5% !important;
+    @media all and (max-width: 1100px) {
+      width: 28.5% !important;
+    }
+    @media all and (max-width: 992px) {
+      width: 23.5% !important;
+    }
+  }
+
+  .mobile-only {
+    display: none;
+    font-weight: bold;
+
+    @media all and (max-width: 992px) {
+      display: inline;
+    }
+  }
+
+  &__column-row {
+    display: flex;
+
+    &--products {
+      .column {
+        flex-grow: 1 !important;
+      }
+    }
+
+    &:not(.orders__column-row--products) {
+      .column {
+        width: 95px !important;
+        flex-grow: 0 !important;
+
+        @media all and (max-width: 992px) {
+          width: 100% !important;
+          flex-grow: 1 !important;
+        }
+      }
+    }
+
+    .column {
+      padding: 0 10px;
+    }
+  }
 }
 
 .companies {
   .column {
     justify-content: space-around;
+  }
+
+  .mobile-only {
+    font-weight: bold;
+    display: none;
+    @media all and (max-width: 480px) {
+      display: inline;
+    }
+  }
+  .head-row {
+    @media all and (max-width: 480px) {
+      display: none !important;
+    }
+  }
+
+  &__title {
+    width: 108px !important;
+    flex-grow: 0 !important;
+
+    @media all and (max-width: 640px) {
+      width: 70px !important;
+    }
+  }
+
+  &__info {
+    .row {
+      display: flex;
+      justify-content: space-around;
+
+      @media all and (max-width: 480px) {
+        flex-direction: column;
+      }
+    }
+
+    .column {
+      @media all and (max-width: 480px) {
+        margin-bottom: 5px;
+      }
+    }
   }
 }
 

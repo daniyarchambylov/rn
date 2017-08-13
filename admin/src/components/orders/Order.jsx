@@ -6,7 +6,8 @@ import { Grid, Image } from 'semantic-ui-react';
 export default class extends React.Component {
   static PropTypes = {
     getOrderProductsAction: React.PropTypes.func.isRequired,
-    order: PropTypes.object.isRequired
+    order: PropTypes.object.isRequired,
+    isStoreHouse: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -60,37 +61,53 @@ export default class extends React.Component {
 
 
   render() {
-    const {order} = this.props;
+    const {order, isStoreHouse} = this.props;
     const {show} = this.state;
     const btnString = show ? 'Свернуть' : 'Развернуть';
 
     return (
       <Grid.Row stretched>
         <Grid.Column>
-          {order.id}
+          <Grid.Row stretched className='orders__column-row'>
+            <Grid.Column className='orders__id'>
+              <span className='mobile-only'># заказа:</span> {order.id}
+            </Grid.Column>
+            <Grid.Column>
+              <span className='mobile-only'>дата заказа:</span> {moment(order.created).format('YYYY.MM.DD HH:mm')}
+            </Grid.Column>
+          </Grid.Row>
         </Grid.Column>
         <Grid.Column>
-          {moment(order.created).format('YYYY.MM.DD HH:mm')}
+          <Grid.Row stretched className='orders__column-row'>
+            {isStoreHouse && <Grid.Column>
+              <span className='mobile-only'>торг. точка:</span> {order.user_name}
+            </Grid.Column>}
+            <Grid.Column>
+              <strong>
+                <span className='mobile-only'>статус:</span> Обрабатывается
+              </strong>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid.Column>
+        <Grid.Column className='orders__products'>
+          <Grid.Row stretched className='orders__column-row orders__column-row--products'>
+            <Grid.Column>
+              {show && <div className='order-items'>
+                {this.renderProducts()}
+              </div>}
+              <button className='btn--transparent btn-order-toggle' onClick={this.showOrderClick}>{btnString}</button>
+            </Grid.Column>
+          </Grid.Row>
         </Grid.Column>
         <Grid.Column>
-          {order.user_name}
-        </Grid.Column>
-        <Grid.Column width={6}>
-          {show && <div className='order-items'>
-            {this.renderProducts()}
-          </div>}
-          <button className='btn--transparent btn-order-toggle' onClick={this.showOrderClick}>{btnString}</button>
-        </Grid.Column>
-        <Grid.Column>
-          <strong>
-            Обрабатывается
-          </strong>
-        </Grid.Column>
-        <Grid.Column>
-          {order.shipment_date}
-        </Grid.Column>
-        <Grid.Column>
-          {order.total_price}
+          <Grid.Row stretched className='orders__column-row'>
+            <Grid.Column>
+              <span className='mobile-only'>Дата отпр.:</span> {order.shipment_date}
+            </Grid.Column>
+            <Grid.Column>
+              <span className='mobile-only'>Общ. сумма:</span> {order.total_price}
+            </Grid.Column>
+          </Grid.Row>
         </Grid.Column>
       </Grid.Row>
     )

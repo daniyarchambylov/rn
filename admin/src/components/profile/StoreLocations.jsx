@@ -17,8 +17,6 @@ class UserProfile extends React.Component {
     this.state = {
       filtered_cities,
     };
-
-    console.log(this.state.filtered_cities)
   }
 
   onChange = (e, x) => {
@@ -39,7 +37,6 @@ class UserProfile extends React.Component {
     e.preventDefault();
     const { filtered_cities } = this.state;
     const { saveCitiesSettings, token } = this.props;
-    console.log(Object.values(filtered_cities).filter(x => x.checked).map(x => x.id))
     saveCitiesSettings(token, Object.values(filtered_cities).filter(x => x.checked).map(x => x.id));
   };
 

@@ -30,7 +30,6 @@ class ProductsReport extends React.Component {
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({activePage: pageNumber});
   }
 
@@ -72,7 +71,6 @@ class ProductsReport extends React.Component {
             <Grid.Column>Номер покупателя</Grid.Column>
           </Grid.Row>
           {products.length > 0 && products.map((order, index) => {
-            console.log(order);
             return (
               <Grid.Row stretched>
                 <Grid.Column>

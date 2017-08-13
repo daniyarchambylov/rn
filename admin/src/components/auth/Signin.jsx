@@ -29,9 +29,6 @@ class SignIn extends React.Component {
     e.preventDefault();
     const {phone, password} = this.state;
 
-    console.log(phone, password);
-
-
     this.props.dispatch(this.props.getSignInAction({phone, password}))
       .then(() => {
         this.props.dispatch(push(this.props.redirectTo));

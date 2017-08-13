@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Form, Button, Message, Image, Select} from 'semantic-ui-react'
+import { getLocations as getLocationsAction } from '../../actions/location/creators/location';
 import {
   getProfile as getProfileAction,
   updateProfile as updateProfileAction,
@@ -10,6 +11,7 @@ import {
 
 class UserProfile extends React.Component {
   static PropTypes = {
+    getLocationsAction: PropTypes.func.isRequired,
     getProfileAction: PropTypes.func.isRequired,
     updateProfileAction: PropTypes.func.isRequired,
     token: PropTypes.any.isRequired,
@@ -27,6 +29,10 @@ class UserProfile extends React.Component {
       locations: {},
       selectedCity: null,
     }
+  }
+
+  componentWillMount() {
+    this.props.getLocationsAction();
   }
 
   componentWillReceiveProps(nextProps, nextState) {
@@ -176,11 +182,11 @@ class UserProfile extends React.Component {
           <Form.Input label='Название компании' type='text' defaultValue={profile.name} name='name' onChange={this.onChange} />
           <Form.Input label='Адрес доставки' type='text' defaultValue={profile.address} name='address' onChange={this.onChange}/>
           <div className='field field-double'>
-            <Select placeholder='Город/область' options={ cities } onChange={this.onControlChange} name='city' defaultValue={profile.city || ''} />
-            <Select placeholder='Район' options={ regions } onChange={this.onControlChange} name='region' defaultValue={profile.region || ''} />
+            <Form.Select label='Город/область' placeholder='Город/область' options={ cities } onChange={this.onControlChange} name='city' defaultValue={profile.city || ''} />
+            <Form.Select label='Район' placeholder='Район' options={ regions } onChange={this.onControlChange} name='region' defaultValue={profile.region || ''} />
           </div>
           <div className='field field-double'>
-            <Select placeholder='Округ' options={  blocks } onChange={this.onControlChange} name='block' defaultValue={profile.block || ''} />
+            <Form.Select label='Округ' placeholder='Округ' options={  blocks } onChange={this.onControlChange} name='block' defaultValue={profile.block || ''} />
             {/*<Form.Input label='Город' type='text' defaultValue={profile.city} name='city' onChange={this.onChange}/>*/}
             <Form.Input label='Почтовый индекс' type='text' defaultValue={profile.zip_code} name='zip_code' onChange={this.onChange}/>
           </div>
@@ -213,4 +219,5 @@ export default connect(mapToProps, {
   getProfileAction,
   updateProfileAction,
   uploadImageAction,
+  getLocationsAction
 })(UserProfile);

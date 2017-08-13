@@ -92,7 +92,6 @@ function mapStateToProps(state) {
   const errors = state.errors['sign-up/'] || {};
   const { token, redirectTo } = state.auth;
 
-  console.log(redirectTo)
   return {
     errors,
     token,

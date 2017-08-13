@@ -37,7 +37,6 @@ class Uploader extends React.Component {
 
     this.props.uploadImageAction(data, token)
       .then(action => {
-        console.log(action)
         const { images } = this.state;
         const image = action.payload.image;
         if (elId <= (images.length - 1)) {

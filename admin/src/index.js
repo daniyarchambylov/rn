@@ -45,8 +45,7 @@ ReactDOM.render(
           <Switch>
             <Route path="/sign-in" component={SignIn}/>
             <Route path="/sign-up" component={SignUp}/>
-            <Route path="/about-us" component={AboutUs}/>
-            <Route path="/user-agreement" component={Agreement}/>
+            {/*<Route path="/about-us" component={AboutUs}/>*/}
 
             <SignedInContainer>
               <Switch>
@@ -63,6 +62,7 @@ ReactDOM.render(
                 <Route path="/cart" component={Cart}/>
                 <Route path="/location-settings" component={StoreLocations}/>
                 <Route path="/product-reports" component={ProductsReport}/>
+                <Route path="/user-agreement" component={Agreement}/>
               </Switch>
             </SignedInContainer>
           </Switch>

@@ -113,23 +113,27 @@ class List extends React.Component {
         </Modal>
 
         <h1 className='title title--primary'>Список товаров</h1>
-        <Grid columns='equal' className='companies list' celled='internally'>
+        <Grid columns='equal' className='companies list product-column' celled='internally'>
           <Grid.Row stretched className='head-row'>
             <Grid.Column className='companies__title'>
               Товар
             </Grid.Column>
-            <Grid.Column>
-              Описание
+            <Grid.Column className='companies__info'>
+              <Grid.Row stretched>
+                <Grid.Column>
+                  Описание
+                </Grid.Column>
+                <Grid.Column>
+                  Кол-во
+                </Grid.Column>
+                <Grid.Column>
+                  Цена
+                </Grid.Column>
+                {role === 'store' && <Grid.Column>
+                  &nbsp;
+                </Grid.Column>}
+              </Grid.Row>
             </Grid.Column>
-            <Grid.Column>
-              Кол-во
-            </Grid.Column>
-            <Grid.Column>
-              Цена
-            </Grid.Column>
-            {role === 'store' && <Grid.Column>
-              &nbsp;
-            </Grid.Column>}
           </Grid.Row>
           {products.map((p, index) => <ListItem product={p} index={index} role={this.props.role} submitClick={this.addToCartClick} />)}
         </Grid>

@@ -43,9 +43,13 @@ class CompaniesList extends React.Component {
         <Grid columns='equal' className='companies list' celled='internally'>
           <Grid.Row stretched className='head-row'>
             <Grid.Column className='companies__title'>Название</Grid.Column>
-            <Grid.Column>Телефон</Grid.Column>
-            <Grid.Column>Город</Grid.Column>
-            <Grid.Column>Адрес</Grid.Column>
+            <Grid.Column className='companies__info'>
+              <Grid.Row stretched>
+                <Grid.Column>Телефон</Grid.Column>
+                <Grid.Column>Город</Grid.Column>
+                <Grid.Column>Адрес</Grid.Column>
+              </Grid.Row>
+            </Grid.Column>
           </Grid.Row>
           {this.renderCompanies()}
         </Grid>

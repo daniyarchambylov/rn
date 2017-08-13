@@ -17,3 +17,8 @@ def locations_view(request):
         all[x.parent.parent_id]['regions'][x.parent_id]['blocks'][x.id] = {'key': x.id, 'value': x.id, 'text': x.name}
 
     return JsonResponse(all)
+
+
+def locations_all_view(request):
+    all = Location.objects.all().values('id', 'name')
+    return JsonResponse(list(all), safe=False)

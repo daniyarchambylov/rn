@@ -23,7 +23,6 @@ class Cart extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.order);
     if (this.props.order !== nextProps.order && nextProps.order.id) {
       this.props.clearCartAction();
       this.props.push('/orders');
@@ -51,8 +50,6 @@ class Cart extends React.Component {
       shipment_price: 100,
       shipment_method: 'courier'
     };
-
-    console.log(products)
 
     this.props.createOderAction(data, token)
   };
